@@ -3555,10 +3555,11 @@
   box.addEventListener('touchend',fin,{passive:true}); box.addEventListener('touchcancel',fin,{passive:true});
 })();</script>
 <style>/* v45 : petite étoile à gauche des cartes pour « À garder » */
-  html body.pager main.cats .story > .star{display:flex !important;grid-area:auto !important;grid-column:auto !important;grid-row:auto !important;margin:0 !important;position:absolute !important;top:8px !important;left:8px !important;right:auto !important;z-index:4;width:30px !important;height:30px !important;border-radius:50%;padding:0 !important;align-items:center;justify-content:center;background:color-mix(in srgb,var(--card,#fff) 88%,transparent) !important;box-shadow:0 1px 3px rgba(0,0,0,.1);color:color-mix(in srgb,var(--ink) 34%,transparent)}
+  html body.pager main.cats .story > .star{display:flex !important;grid-area:auto !important;grid-column:auto !important;grid-row:auto !important;margin:0 !important;position:absolute !important;top:8px !important;right:8px !important;left:auto !important;z-index:4;width:30px !important;height:30px !important;border-radius:50%;padding:0 !important;align-items:center;justify-content:center;background:color-mix(in srgb,var(--card,#fff) 88%,transparent) !important;box-shadow:0 1px 3px rgba(0,0,0,.1);color:color-mix(in srgb,var(--ink) 34%,transparent)}
   html body.pager main.cats .story > .star::before{width:17px !important;height:17px !important}
   html body.pager main.cats .story > .star.on{color:#ffb300 !important}
   html body.pager main.cats .story > .star::after{content:"";position:absolute;inset:-7px}
   html body.pager main.cats .story.is-read > .star{opacity:1 !important;filter:none !important}
+  html body.pager main.cats .story .tag{margin-right:30px !important}
 </style>
 </body></html>
