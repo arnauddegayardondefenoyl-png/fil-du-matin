@@ -4128,4 +4128,5 @@
   let started=false; const go=()=>{ if(started) return; started=true; const wait=Math.max(0,750-(performance.now()-t0)); setTimeout(()=>requestAnimationFrame(()=>requestAnimationFrame(fly)),wait); };
   if(H.classList.contains('fdm-ready')) go(); else { const mo=new MutationObserver(()=>{ if(H.classList.contains('fdm-ready')){ mo.disconnect(); go(); } }); mo.observe(H,{attributes:true,attributeFilter:['class']}); }
   setTimeout(go,1800); setTimeout(end,4200);
-})();</script></body></html>
+})();</script><style>/* v67 : pas de chiffres clés dans Sorties à deux */ html body .story.sortie .stat{display:none !important}</style>
+</body></html>
