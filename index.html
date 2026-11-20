@@ -1713,7 +1713,7 @@
   function paintStars(){ $$('.star').forEach(b=>{const on=!!favs[b.dataset.id]; b.classList.toggle('on',on); b.textContent=on?'★':'☆'; b.title=on?'Retirer de « À relire »':'À relire plus tard';}); $('#favCnt').textContent=Object.keys(favs).length; renderFavs(); }
   function renderFavs(){
     const L=$('#favList'), arr=Object.values(favs).sort((a,b)=>(b.saved||0)-(a.saved||0));
-    L.innerHTML=arr.length?'':'<p class="empty">Rien pour l\'instant. Touche ☆ sur un article ou une sortie pour le garder ici.</p>';
+    L.innerHTML=arr.length?'':'<p class="empty">Rien pour l\'instant. Touche ☆ sur un article pour le garder ici.</p>';
     arr.forEach(f=>{const d=document.createElement('div'); d.className='fav'; d.dataset.fid=f.id; d.dataset.fed=f.edition||'';
       d.innerHTML='<button type="button">Retirer</button><small></small><a class="t" target="_blank" rel="noopener"></a><p></p>';
       d.querySelector('small').textContent=(f.kind||'')+(f.edition?' · '+f.edition:''); const a=d.querySelector('a'); a.textContent=f.title; a.href=f.link; d.querySelector('p').textContent=f.sub||'';
@@ -3563,11 +3563,11 @@
   html body.pager main.cats .story .tag{margin-right:30px !important}
 </style>
 <style>/* v46 : pas d'étoile sur Week-end à deux et Vols au soleil */
-  html body .story.weekend .star,html body .story.vols .star{display:none !important}
-  html body.pager main.cats .story.weekend .tag,html body.pager main.cats .story.vols .tag{margin-right:0 !important}
+  html body .story.weekend .star,html body .story.vols .star,html body .story.sortie .star{display:none !important}
+  html body.pager main.cats .story.weekend .tag,html body.pager main.cats .story.vols .tag,html body.pager main.cats .story.sortie .tag{margin-right:0 !important}
 </style>
 <script>(function(){
-  const SEL='.story.weekend .star,.story.vols .star';
+  const SEL='.story.weekend .star,.story.vols .star,.story.sortie .star';
   const strip=()=>document.querySelectorAll(SEL).forEach(s=>s.remove());
   strip(); if(window.MutationObserver) new MutationObserver(strip).observe(document.body,{childList:true,subtree:true});
 })();</script>
