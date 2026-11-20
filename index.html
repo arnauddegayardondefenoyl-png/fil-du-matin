@@ -4001,6 +4001,18 @@
     html body.pager .wrap > .dateline.dateline{display:grid !important;flex-direction:unset !important;grid-template-columns:repeat(2,max-content) !important;gap:6px !important;justify-items:stretch;align-items:stretch}
     html body.pager .wrap > .dateline.dateline > .bp-w,html body.pager .wrap > .dateline.dateline .qbtn,html body.pager .wrap > .dateline.dateline .tbtn{min-width:0 !important;width:100% !important;box-sizing:border-box}
   }
-  @media (min-width:900px) and (max-width:1199px){ html body.pager .wrap > .dateline.dateline{grid-template-columns:max-content !important} }
+  @media (min-width:900px) and (max-width:1199px){
+    html body.pager .wrap > .dateline.dateline{gap:5px !important;right:14px !important}
+    html body.pager .wrap > .dateline.dateline > .bp-w,html body.pager .wrap > .dateline.dateline .qbtn,html body.pager .wrap > .dateline.dateline .tbtn{height:27px !important;min-height:0 !important;padding:0 8px !important;gap:5px !important;font-size:11px !important;border-radius:9px !important}
+    html body.pager .wrap > .dateline.dateline svg,html body.pager .wrap > .dateline.dateline .bi{width:13px !important;height:13px !important;font-size:12px !important}
+    html body.pager .wrap > .dateline.dateline .cnt,html body.pager .wrap > .dateline.dateline .bn,html body.pager .wrap > .dateline.dateline .badge{min-width:15px !important;height:15px !important;line-height:15px !important;font-size:9.5px !important;padding:0 4px !important}
+  }
+  @media (min-width:900px) and (max-width:1199px){ html body.pager .wrap > .dateline.dateline #favBtn{height:27px !important;min-height:0 !important;padding:0 8px !important;font-size:11px !important;border-radius:9px !important} html body.pager .wrap > .dateline.dateline #favBtn *{font-size:inherit} }
+  @media (min-width:900px) and (max-width:989px){ html body.pager .wrap > .dateline.dateline .lbl-x{display:none} }
+  html body.pager .wrap > .dateline.dateline .qbtn .lbl-x{margin-left:calc(.3em - var(--qg,5px))}
+  html body.pager .wrap > .dateline.dateline .qbtn{--qg:5px}
+</style>
+<script>(function(){ document.querySelectorAll('.dateline .qbtn').forEach(b=>{ b.childNodes.forEach(n=>{ if(n.nodeType===3&&/ (aujourd'hui|d'hier)\s*$/.test(n.textContent)){ const m=n.textContent.match(/^(.*?)( (?:aujourd'hui|d'hier))(\s*)$/); if(!m) return; const s=document.createElement('span'); s.className='lbl-x'; s.textContent=m[2].trim(); n.textContent=m[1]; n.after(s); } }); }); })();</script>
+<style>
 </style>
 </body></html>
