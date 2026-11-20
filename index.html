@@ -1204,7 +1204,7 @@
   <div class="dateline">
     <span>Vendredi 20 novembre 2026</span>
     <span class="quick"><button type="button" class="qbtn" data-p="pHier" aria-expanded="false">🏁 Résultats d'hier</button><button type="button" class="qbtn" data-p="pAgenda" aria-expanded="false">📅 À suivre aujourd'hui<span class="cnt">6</span></button></span>
-    <span class="toolbar"><button class="tbtn" id="favBtn" type="button">⭐ À garder <span class="cnt" id="favCnt">0</span></button></span>
+    <span class="toolbar"><button class="tbtn" id="favBtn" type="button">⭐ À relire <span class="cnt" id="favCnt">0</span></button></span>
   </div>
 
 
@@ -1675,7 +1675,7 @@
     </section>
   </main>
 </div>
-<aside id="favs" aria-label="À garder"><header><h2>⭐ À garder</h2><button class="tbtn" id="favClose" type="button">Fermer ✕</button></header><div class="list" id="favList"></div><div class="sync" id="favSync">Synchronisé entre tes appareils</div></aside>
+<aside id="favs" aria-label="À relire"><header><h2>⭐ À relire</h2><button class="tbtn" id="favClose" type="button">Fermer ✕</button></header><div class="list" id="favList"></div><div class="sync" id="favSync">Synchronisé entre tes appareils</div></aside>
 <script>
   window.fdmScroller=el=>el&&el.closest?el.closest('.rd-body'):null;
   window.fdmRelTop=el=>{ const sc=fdmScroller(el); return el.getBoundingClientRect().top-(sc?sc.getBoundingClientRect().top:0); };
@@ -1710,7 +1710,7 @@
     const sect=el.closest('article.story'); const k=sect?($('.tag',sect)||{}).textContent.trim():'';
     return {id:'e-'+slug(t+'-'+when),kind:k,title:t,sub:when+' · '+(($('.price',el)||{}).textContent||''),link:b?b.href:location.href,edition:EDITION};
   }
-  function paintStars(){ $$('.star').forEach(b=>{const on=!!favs[b.dataset.id]; b.classList.toggle('on',on); b.textContent=on?'★':'☆'; b.title=on?'Retirer de « À garder »':'Garder pour plus tard';}); $('#favCnt').textContent=Object.keys(favs).length; renderFavs(); }
+  function paintStars(){ $$('.star').forEach(b=>{const on=!!favs[b.dataset.id]; b.classList.toggle('on',on); b.textContent=on?'★':'☆'; b.title=on?'Retirer de « À relire »':'À relire plus tard';}); $('#favCnt').textContent=Object.keys(favs).length; renderFavs(); }
   function renderFavs(){
     const L=$('#favList'), arr=Object.values(favs).sort((a,b)=>(b.saved||0)-(a.saved||0));
     L.innerHTML=arr.length?'':'<p class="empty">Rien pour l\'instant. Touche ☆ sur un article ou une sortie pour le garder ici.</p>';
@@ -2201,7 +2201,7 @@
     news:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4h10A1.5 1.5 0 0 1 17 5.5V19a1 1 0 0 0 1 1H6a2 2 0 0 1-2-2z"/><path d="M17 8h2.5a.5.5 0 0 1 .5.5V18a2 2 0 0 1-2 2M7.5 8h6M7.5 11.5h6M7.5 15h4"/></svg>',
     laurie:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7.5-4.6-7.5-10.1A4.4 4.4 0 0 1 12 7.3a4.4 4.4 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/></svg>',
     fav:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="m12 3.8 2.5 5.1 5.6.8-4 3.9.9 5.6-5-2.6-5 2.6.9-5.6-4-3.9 5.6-.8z"/></svg>'};
-  const tabs=[['work','Travail','.cat.c-work'],['news','Actu','.cat.c-news'],['laurie','Avec Laurie','.cat.c-laurie'],['fav','À garder',null]];
+  const tabs=[['work','Travail','.cat.c-work'],['news','Actu','.cat.c-news'],['laurie','Avec Laurie','.cat.c-laurie'],['fav','À relire',null]];
   const bar=document.createElement('nav'); bar.className='ios-tabbar'; bar.setAttribute('aria-label','Sections');
   bar.innerHTML=tabs.map(t=>'<button type="button" data-t="'+t[0]+'">'+ic[t[0]]+'<span>'+t[1]+'</span>'+(t[0]==='fav'?'<i class="badge"></i>':'')+'</button>').join('');
   document.body.appendChild(bar);
