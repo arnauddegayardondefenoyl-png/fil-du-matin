@@ -3419,4 +3419,73 @@
   }
   @media (max-width:360px){ html body .ios-tabbar{left:8px !important;right:8px !important;gap:2px !important} html body .ios-tabbar button{font-size:10px !important} }
 </style>
+<style>/* v41 : toucher à côté de l'article pour le fermer */
+  #fdm-reader .rd-body{cursor:zoom-out}
+  #fdm-reader .rd-body > .story,#fdm-reader .rd-body > .story *{cursor:auto}
+  #fdm-reader .rd-body > .story a,#fdm-reader .rd-body > .story button,#fdm-reader .rd-body > .story [role=button],#fdm-reader .rd-body > .story .evt,#fdm-reader .rd-body > .story h3{cursor:pointer}
+  @media (max-width:959px){ #fdm-reader .rd-body{padding-left:14px !important;padding-right:14px !important} }
+</style>
+<script>(function(){
+  const rd=document.getElementById('fdm-reader'); if(!rd) return; const body=rd.querySelector('.rd-body'), cl=rd.querySelector('.rd-close'); if(!body||!cl) return;
+  let sx=0,sy=0,moved=false;
+  body.addEventListener('pointerdown',e=>{ sx=e.clientX; sy=e.clientY; moved=false; },{passive:true});
+  body.addEventListener('pointermove',e=>{ if(Math.abs(e.clientX-sx)>8||Math.abs(e.clientY-sy)>8) moved=true; },{passive:true});
+  body.addEventListener('click',e=>{ const h=e.target.closest('.story.open > h3'); if(h){ e.stopImmediatePropagation(); e.preventDefault(); } },true);
+  body.addEventListener('click',e=>{ if(moved) return; if(e.target.closest('.story,.rd-endback,.rd-top,.rd-peek,a,button,input,textarea,select,.wk-map,.vx-map')) return;
+    if(getSelection&&String(getSelection()).length) return; cl.click(); });
+  rd.addEventListener('click',e=>{ if(e.target===rd) cl.click(); });
+})();
+</script>
+<style>/* v41b : sur téléphone, l'article s'ouvre en feuille ; toucher le haut grisé le ferme */
+  .rd-bd{position:fixed;inset:0;z-index:84;background:rgba(0,0,0,.28);opacity:0;pointer-events:none;transition:opacity .3s}
+  .rd-bd.on{opacity:1;pointer-events:auto}
+  .rd-bd .rd-bd-hint{position:absolute;left:50%;top:calc(10px + env(safe-area-inset-top));transform:translateX(-50%);padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.88);color:#333;font:600 12px var(--sf,system-ui);white-space:nowrap}
+  @media (max-width:959px){
+    #fdm-reader{top:calc(46px + env(safe-area-inset-top)) !important;border-radius:20px 20px 0 0;overflow:hidden;box-shadow:0 -6px 30px rgba(0,0,0,.18)}
+    #fdm-reader .rd-bar{padding-top:10px !important}
+    #fdm-reader .rd-bar::before{content:"";position:absolute;left:50%;top:5px;width:38px;height:5px;margin-left:-19px;border-radius:3px;background:rgba(120,120,128,.35)}
+  }
+  @media (min-width:960px){ .rd-bd{display:none} }
+</style>
+<script>(function(){
+  const rd=document.getElementById('fdm-reader'); if(!rd) return; const cl=rd.querySelector('.rd-close'); if(!cl) return;
+  const bd=document.createElement('div'); bd.className='rd-bd'; bd.innerHTML='<span class="rd-bd-hint">Touche ici pour revenir</span>'; document.body.appendChild(bd);
+  const sync=()=>bd.classList.toggle('on',rd.classList.contains('on'));
+  new MutationObserver(sync).observe(rd,{attributes:true,attributeFilter:['class']}); sync();
+  bd.addEventListener('click',e=>{ e.stopPropagation(); cl.click(); });
+  /* tirer la poignée vers le bas ferme aussi */
+  const bar=rd.querySelector('.rd-bar'); let y0=null;
+  if(bar){ bar.addEventListener('touchstart',e=>{ y0=e.touches[0].clientY; },{passive:true}); bar.addEventListener('touchend',e=>{ if(y0!==null&&e.changedTouches[0].clientY-y0>50) cl.click(); y0=null; },{passive:true}); }
+})();
+</script>
+<style>/* v42 : liens Booking → proposer l'appli sur téléphone */
+  .bk-sheet{position:fixed;left:0;right:0;bottom:0;z-index:120;padding:16px 16px calc(18px + env(safe-area-inset-bottom));background:var(--card,#fff);border-radius:20px 20px 0 0;box-shadow:0 -10px 40px rgba(0,0,0,.2);transform:translateY(105%);transition:transform .3s cubic-bezier(.2,.8,.2,1);font-family:var(--sf,system-ui);color:var(--ink)}
+  .bk-sheet.on{transform:none}
+  .bk-sheet h4{margin:0 0 4px;font:800 16px var(--sf,system-ui);display:flex;align-items:center;gap:8px}
+  .bk-sheet h4 i{font-style:normal;display:inline-flex;width:28px;height:28px;border-radius:8px;background:#003580;color:#fff;font:800 15px/28px var(--sf,system-ui);justify-content:center}
+  .bk-sheet p{margin:0 0 14px;font:500 13px/1.4 var(--sf,system-ui);color:var(--muted)}
+  .bk-sheet a,.bk-sheet button{display:block;width:100%;box-sizing:border-box;text-align:center;padding:13px;border-radius:14px;border:0;font:700 15px var(--sf,system-ui);text-decoration:none;cursor:pointer}
+  .bk-sheet .bk-app{background:#003580;color:#fff;margin-bottom:8px}
+  .bk-sheet .bk-web{background:var(--fill,rgba(120,120,128,.12));color:var(--ink);margin-bottom:8px}
+  .bk-sheet .bk-no{background:none;color:var(--muted);font-weight:600;padding:8px}
+  .bk-bg{position:fixed;inset:0;z-index:119;background:rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .25s}
+  .bk-bg.on{opacity:1;pointer-events:auto}
+</style>
+<script>(function(){
+  const coarse=()=>matchMedia('(pointer:coarse)').matches||matchMedia('(max-width:899px)').matches;
+  const android=/android/i.test(navigator.userAgent);
+  const sh=document.createElement('div'); sh.className='bk-sheet'; sh.setAttribute('role','dialog');
+  sh.innerHTML='<h4><i>B.</i>Ouvrir avec Booking ?</h4><p>Tu as l\'application Booking : elle s\'ouvre directement sur cette recherche, avec tes favoris et ton compte.</p><a class="bk-app" target="_blank" rel="noopener">Ouvrir l\'appli Booking</a><a class="bk-web" target="_blank" rel="noopener">Continuer sur le site</a><button type="button" class="bk-no">Annuler</button>';
+  const bg=document.createElement('div'); bg.className='bk-bg'; document.body.appendChild(bg); document.body.appendChild(sh);
+  const close=()=>{ sh.classList.remove('on'); bg.classList.remove('on'); };
+  bg.addEventListener('click',close); sh.querySelector('.bk-no').addEventListener('click',close);
+  sh.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setTimeout(close,300)));
+  document.addEventListener('click',e=>{ const a=e.target.closest('a[href*="booking.com"]'); if(!a||a.closest('.bk-sheet')||!coarse()) return;
+    e.preventDefault(); e.stopPropagation(); const u=a.href;
+    let app=u; if(android){ try{ const x=new URL(u); app='intent://'+x.host+x.pathname+x.search+'#Intent;scheme=https;package=com.booking;S.browser_fallback_url='+encodeURIComponent(u)+';end'; }catch(_){} }
+    const A=sh.querySelector('.bk-app'), W=sh.querySelector('.bk-web'); A.href=app; W.href=u;
+    if(android){ A.removeAttribute('target'); } else { A.setAttribute('target','_blank'); }
+    sh.classList.add('on'); bg.classList.add('on'); try{ navigator.vibrate&&navigator.vibrate(9); }catch(_){} },true);
+})();
+</script>
 </body></html>
