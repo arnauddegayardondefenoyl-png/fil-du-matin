@@ -1,5 +1,5 @@
 /* Le Fil du Matin : service worker (appli installée, lecture hors ligne) */
-const V='fdm-v1';
+const V='fdm-v2';
 const CORE=['./','./index.html','./manifest.json','./img/icon-192.png','./img/icon-512.png'];
 self.addEventListener('install',e=>{ e.waitUntil(caches.open(V).then(c=>c.addAll(CORE).catch(()=>{})).then(()=>self.skipWaiting())); });
 self.addEventListener('activate',e=>{ e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==V).map(x=>caches.delete(x)))).then(()=>self.clients.claim())); });
