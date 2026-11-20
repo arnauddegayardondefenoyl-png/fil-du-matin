@@ -3174,7 +3174,6 @@
   .bp-w .bn{margin-left:auto;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:#ff3b30;color:#fff;font:700 11px/18px var(--sf,system-ui);text-align:center;box-sizing:border-box}
   .bp-w .bn.z{background:var(--fill,rgba(120,120,128,.2));color:var(--muted)}
   .bp-w:hover{box-shadow:0 4px 14px rgba(0,0,0,.12)}
-  .wx-w{top:calc(52px + env(safe-area-inset-top)) !important}
   .bp-pop{position:fixed;z-index:96;top:calc(56px + env(safe-area-inset-top));left:20px;width:min(460px,calc(100vw - 40px));max-height:calc(100dvh - 80px);overflow-y:auto;background:var(--card,#fff);border-radius:18px;box-shadow:0 18px 50px rgba(0,0,0,.2);padding:16px 14px 14px;opacity:0;transform:translateY(-8px) scale(.98);transform-origin:top left;pointer-events:none;transition:opacity .2s,transform .25s cubic-bezier(.2,.8,.2,1);color:var(--ink)}
   .bp-pop.on{opacity:1;transform:none;pointer-events:auto}
   .bp-hd{display:flex;align-items:baseline;gap:8px;margin:0 4px 10px}
@@ -3205,7 +3204,6 @@
     .bp-w .bl{display:none}
     .bp-w .bi{font-size:12px}
     .bp-w .bn{height:15px;min-width:15px;font-size:9.5px;line-height:15px;padding:0 4px;margin-left:0}
-    .wx-w{top:calc(33px + env(safe-area-inset-top)) !important}
     .bp-pop{top:auto;bottom:0;left:0;width:100%;max-height:82dvh;border-radius:20px 20px 0 0;padding:18px 12px calc(20px + env(safe-area-inset-bottom));transform:translateY(100%);transform-origin:bottom}
     .bp-pop.on{transform:none}
   }
@@ -3283,6 +3281,45 @@
     render(out,!!Y);
   }
   build();
+})();
+</script>
+<style>/* v36b : bons plans à droite, météo centrée entre le bord et le titre */
+  .wx-w{top:14px !important;transition:opacity .2s}
+  .wx-w:not(.placed){opacity:0}
+  .wx-w{gap:7px}
+  .wx-row{height:38px;min-width:168px;padding:0 14px;gap:9px;border-radius:12px;font-size:14px}
+  .wx-row .wi{font-size:19px}
+  .wx-row b{font-size:15px}
+  html body.pager .wrap > .dateline .bp-w{position:static;order:0 !important;height:32px;min-width:190px;padding:0 12px;border-radius:10px;font-size:12.5px;justify-content:flex-start}
+  @media (max-width:899px){
+    .wx-w{gap:4px}
+    .wx-row{height:27px;min-width:0;padding:0 8px;gap:5px;border-radius:9px;font-size:12px}
+    .wx-row .wi{font-size:14px}
+    .wx-row b{font-size:12.5px}
+    .bp-w{left:auto !important;right:8px;top:calc(9px + env(safe-area-inset-top));height:27px;padding:0 8px;border-radius:9px;font-size:12px}
+    .bp-w .bi{font-size:14px}
+    .bp-pop{left:0}
+  }
+  @media (max-width:420px){ html body .mast .title{font-size:min(34px,8.6vw) !important} }
+  @media (max-width:375px){ html body .mast .kicker{font-size:12.5px !important} html body .mast .title{font-size:31px !important} .wx-row{padding:0 6px;gap:4px} }
+  @media (max-width:365px){ html body .mast .kicker{font-size:11.5px !important} }
+  @media (min-width:900px){ .bp-pop{left:auto;right:20px;transform-origin:top right;top:calc(150px + env(safe-area-inset-top))} }
+</style>
+<script>(function(){
+  const wrap=document.querySelector('.wrap'); if(!wrap) return;
+  const mqD=matchMedia('(min-width:900px)');
+  function moveBP(){ const b=document.querySelector('.bp-w'), dl=document.querySelector('.wrap > .dateline'); if(!b) return;
+    if(mqD.matches&&dl){ if(b.parentNode!==dl) dl.insertBefore(b,dl.firstChild); } else if(b.parentNode!==wrap) wrap.appendChild(b); }
+  function placeWX(){ const w=document.querySelector('.wx-w'), h=document.querySelector('.mast .title'); if(!w||!h||w.hidden) return;
+    const rg=document.createRange(); rg.selectNodeContents(h); const r=rg.getBoundingClientRect(), wr=wrap.getBoundingClientRect();
+    const ww=w.offsetWidth, wh=w.offsetHeight; const lx=r.left-wr.left;
+    const left=Math.max(4,Math.round(lx/2-ww/2)); let top=Math.max(6,Math.round(r.top-wr.top+r.height/2-wh/2));
+    const dp=document.querySelector('.mast .ios-date'); if(dp){ const rr=document.createRange(); rr.selectNodeContents(dp); const pr=rr.getBoundingClientRect(); if(left+ww>pr.left-wr.left-14) top=Math.max(top,Math.round(pr.bottom-wr.top+8)); }
+    w.style.setProperty('left',left+'px','important'); w.style.setProperty('top',top+'px','important'); w.classList.add('placed'); }
+  moveBP(); mqD.addEventListener?mqD.addEventListener('change',()=>{ moveBP(); placeWX(); }):0;
+  addEventListener('resize',()=>requestAnimationFrame(placeWX));
+  const obs=new MutationObserver(()=>requestAnimationFrame(placeWX)); const tryObs=()=>{ const w=document.querySelector('.wx-w'); if(w) obs.observe(w,{attributes:true,childList:true,subtree:true}); else setTimeout(tryObs,300); }; tryObs();
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(placeWX); setTimeout(placeWX,800);
 })();
 </script>
 </body></html>
