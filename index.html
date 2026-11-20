@@ -3402,7 +3402,7 @@
   const wrap=document.querySelector('.wrap'); if(!wrap) return;
   const mqD=matchMedia('(min-width:900px)');
   function moveBP(){ const b=document.querySelector('.bp-w'), dl=document.querySelector('.wrap > .dateline'); if(!b) return;
-    if(mqD.matches&&dl){ if(b.parentNode!==dl) dl.insertBefore(b,dl.firstChild); } else if(b.parentNode!==wrap) wrap.appendChild(b); }
+    if(b.parentNode!==wrap) wrap.appendChild(b); } /* v63 : Bons plans reste à côté de la météo */
   function placeWX(){ const w=document.querySelector('.wx-w'), h=document.querySelector('.mast .title'); if(!w||!h||w.hidden||!mqD.matches) return;
     w.classList.add('placed'); return; /* v61 : position fixe, en miroir des boutons */
     const rg=document.createRange(); rg.selectNodeContents(h); const r=rg.getBoundingClientRect(), wr=wrap.getBoundingClientRect();
@@ -4014,8 +4014,7 @@
   }
   @media (min-width:900px) and (max-width:1199px){ html body.pager .wrap > .dateline.dateline #favBtn{height:27px !important;min-height:0 !important;padding:0 8px !important;font-size:11px !important;border-radius:9px !important} html body.pager .wrap > .dateline.dateline #favBtn *{font-size:inherit} }
   @media (min-width:900px) and (max-width:1199px){ html body.pager .wrap > .dateline.dateline .lbl-x{display:none} }
-  html body.pager .wrap > .dateline.dateline .qbtn .lbl-x{margin-left:calc(.3em - var(--qg,5px))}
-  html body.pager .wrap > .dateline.dateline .qbtn{--qg:5px}
+  .qbtn .lbl-x{margin-left:.2em}
 </style>
 <script>(function(){ document.querySelectorAll('.dateline .qbtn').forEach(b=>{ b.childNodes.forEach(n=>{ if(n.nodeType===3&&/ (aujourd'hui|d'hier)\s*$/.test(n.textContent)){ const m=n.textContent.match(/^(.*?)( (?:aujourd'hui|d'hier))(\s*)$/); if(!m) return; const s=document.createElement('span'); s.className='lbl-x'; s.textContent=m[2].trim(); n.textContent=m[1]; n.after(s); } }); }); })();</script>
 <style>
@@ -4045,19 +4044,43 @@
     if(!mq.matches||!cats.length){ [dl,wx].forEach(e=>{ if(e){ e.style.removeProperty('top'); e.style.removeProperty('left'); e.style.removeProperty('right'); } }); return; }
     const wr=wrap.getBoundingClientRect(), a=cats[0].getBoundingClientRect(), z=cats[cats.length-1].getBoundingClientRect();
     const gap=12, ti=document.querySelector('.mast .title'); let tr=null; if(ti){ const rg=document.createRange(); rg.selectNodeContents(ti); tr=rg.getBoundingClientRect(); }
-    const hits=(l,r,top,bot)=>tr&&l<tr.right+12&&r>tr.left-12&&top<tr.bottom+4&&bot>tr.top-4;
+    const hits=(l,r,top,bot)=>pr&&l<pr.right+14&&r>pr.left-14;
     function put(el,side,edge){ const h=el.offsetHeight, w=el.offsetWidth; let top=Math.round(a.top-wr.top-h-gap);
       const L=side==='l'?a.left:z.right-w, R=L+w; if(hits(L,R,wr.top+top,wr.top+top+h)) top=14;
       el.style.setProperty(side==='l'?'left':'right',edge+'px','important'); el.style.setProperty('top',Math.max(6,top)+'px','important'); }
-    const lvl=el=>{ const h=el.offsetHeight; return Math.round(a.top-wr.top-h-gap); };
+    const pl=document.querySelector('.mast .ios-date'); const pr=pl?pl.getBoundingClientRect():null;
+    const lvl=el=>{ const h=el.offsetHeight; return pr?Math.round(pr.top-wr.top+pr.height/2-h/2):Math.round(a.top-wr.top-h-gap); };
     let ok=true; if(dl){ const top=lvl(dl), w=dl.offsetWidth; if(hits(z.right-w,z.right,wr.top+top,wr.top+top+dl.offsetHeight)) ok=false; }
-    if(wx&&!wx.hidden){ const top=lvl(wx), w=wx.offsetWidth; if(hits(a.left,a.left+w,wr.top+top,wr.top+top+wx.offsetHeight)) ok=false; }
+    if(wx&&!wx.hidden){ const top=lvl(wx), _bp=wrap.querySelector(':scope > .bp-w'), w=wx.offsetWidth+(_bp?_bp.offsetWidth+6:0); if(hits(a.left,a.left+w,wr.top+top,wr.top+top+wx.offsetHeight)) ok=false; }
     const set=(el,side,edge)=>{ el.style.setProperty(side,edge+'px','important'); el.style.setProperty('top',(ok?Math.max(6,lvl(el)):14)+'px','important'); };
     if(dl) set(dl,'right',Math.round(wr.right-z.right));
     if(wx&&!wx.hidden) set(wx,'left',Math.round(a.left-wr.left));
+    const bp=wrap.querySelector(':scope > .bp-w');
+    if(bp){ const base=(wx&&!wx.hidden)?(wx.getBoundingClientRect().right-wr.left+6):(a.left-wr.left); bp.style.setProperty('left',Math.round(base)+'px','important'); bp.style.setProperty('right','auto','important'); bp.style.setProperty('top',(ok?Math.max(6,lvl(bp)):14)+'px','important'); }
   }
   let t=null; const later=()=>{ clearTimeout(t); t=setTimeout(place,60); };
   later(); addEventListener('resize',later); addEventListener('load',later); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(later);
   const wx=()=>wrap.querySelector(':scope > .wx-w'); const ob=new MutationObserver(later); const hook=()=>{ const w=wx(); if(w) ob.observe(w,{attributes:true,attributeFilter:['hidden'],childList:true}); else setTimeout(hook,300); }; hook();
+})();</script>
+<style>/* v63 : une seule ligne au niveau de la date — météo à gauche, boutons à droite, alignés sur les colonnes (ordinateur) */
+  @media (min-width:900px){
+    html body.pager .wrap > .dateline.dateline{display:flex !important;flex-direction:row !important;grid-template-columns:none !important;gap:6px !important;align-items:center !important}
+    html body.pager .wrap > .dateline.dateline > .bp-w,html body.pager .wrap > .dateline.dateline .qbtn,html body.pager .wrap > .dateline.dateline #favBtn{width:auto !important;height:30px !important;min-height:0 !important;padding:0 11px !important;gap:6px !important;font-size:12px !important;border-radius:999px !important;white-space:nowrap}
+    html body.pager .wrap > .dateline.dateline .lbl-x{display:none !important}
+    html body .wrap > .wx-w.wx-w{flex-direction:row !important;gap:6px !important}
+    html body .wrap > .bp-w{position:absolute !important;z-index:21;width:auto !important;min-width:0 !important;height:30px !important;padding:0 11px !important;gap:6px !important;font-size:12px !important;border-radius:999px !important;white-space:nowrap}
+    html body .wrap > .bp-w .bn{margin-left:2px !important}
+    html body .wrap > .wx-w.wx-w .wx-row{height:30px !important;min-width:0 !important;padding:0 12px 0 10px !important;gap:6px !important;border-radius:999px !important;font-size:12px !important}
+    html body .wrap > .wx-w.wx-w .wx-row b{margin-left:4px !important}
+  }
+  @media (min-width:900px) and (max-width:1099px){
+    html body.pager .wrap > .dateline.dateline .qbtn .ql,html body .wrap > .bp-w .bl,html body.pager .wrap > .dateline.dateline #favBtn .fl{display:none !important}
+    html body .wrap > .wx-w.wx-w .wx-row .nm{display:none !important} html body .wrap > .wx-w.wx-w .wx-row .ab{display:inline !important}
+  }
+</style>
+<script>(function(){ /* libellés repliables pour les petits écrans */
+  const wrapT=(b,cls)=>{ if(!b||b.querySelector('.'+cls)) return; [...b.childNodes].forEach(n=>{ if(n.nodeType===3&&n.textContent.trim()){ const s=document.createElement('span'); s.className=cls; s.textContent=n.textContent.trim(); n.replaceWith(s); if(!b.title) b.title=(b.textContent||'').replace(/\d+/g,'').trim(); } }); };
+  document.querySelectorAll('.dateline .qbtn').forEach(b=>wrapT(b,'ql')); wrapT(document.getElementById('favBtn'),'fl');
+  const bp=document.querySelector('.bp-w'); if(bp&&!bp.title) bp.title='Bons plans';
 })();</script>
 </body></html>
