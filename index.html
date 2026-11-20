@@ -3934,4 +3934,38 @@
   if(n<=14&&T.lat){ fetch('https://api.open-meteo.com/v1/forecast?latitude='+T.lat+'&longitude='+T.lon+'&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&start_date='+T.date+'&end_date='+T.date)
     .then(r=>r.ok?r.json():null).then(d=>{ if(!d||!d.daily) return; const D=d.daily; const s=el.querySelector('.ts'); s.textContent='Départ '+dl+' · prévu '+Math.round(D.temperature_2m_max[0])+'° / '+Math.round(D.temperature_2m_min[0])+'° · pluie '+D.precipitation_probability_max[0]+' %'; el.title='Prévision Open-Meteo'; }).catch(()=>{}); }
 })();</script>
+<style>/* v56 : typographie harmonisée (titres des cartes, lecteur, résumés) */
+  :root{--t-card:14.5px;--t-card-lh:1.32;--t-tag:10.5px;--t-rd:25px;--t-lede:17px;--t-body:16px;--t-ess:15.5px;--t-lbl:11.5px}
+  @media (max-width:899px){ :root{--t-card:15px;--t-rd:22.5px;--t-lede:16.5px;--t-body:16px;--t-ess:15px} }
+  /* cartes de l'accueil : même taille partout */
+  html body.pager main.cats > section.cat.cat.cat .story h3{font-size:var(--fsu,var(--t-card)) !important;line-height:1.28 !important;font-weight:700 !important;letter-spacing:-.012em !important;display:-webkit-box !important;-webkit-box-orient:vertical !important;-webkit-line-clamp:5 !important;overflow:hidden !important;text-wrap:pretty}
+  html body.pager main.cats > section.cat.cat.cat .story .tag{font-size:var(--t-tag) !important;font-weight:750 !important;letter-spacing:.055em !important;line-height:1.2 !important}
+  /* lecteur */
+  html body #fdm-reader .rd-body .story h3{font-size:var(--t-rd) !important;line-height:1.2 !important;font-weight:800 !important;letter-spacing:-.022em !important;text-wrap:balance;-webkit-line-clamp:unset !important;display:block !important;overflow:visible !important}
+  html body #fdm-reader .rd-body .story .tag{font-size:11px !important;letter-spacing:.06em !important}
+  html body #fdm-reader .rd-body .story .lede{font-size:var(--t-lede) !important;line-height:1.55 !important;font-weight:500 !important;color:color-mix(in srgb,var(--ink) 88%,transparent) !important;letter-spacing:-.005em}
+  html body #fdm-reader .rd-body .story ul.ess li{font-size:var(--t-ess) !important;line-height:1.45 !important;font-weight:550 !important}
+  html body #fdm-reader .rd-body .story ul.ess::before,#fdm-reader .story .ess-h{font-size:var(--t-lbl) !important}
+  html body #fdm-reader .rd-body .story .more-inner p,#fdm-reader .story .more-inner li,#fdm-reader .story .facts,#fdm-reader .story .brief{font-size:var(--t-body) !important;line-height:1.6 !important}
+  html body #fdm-reader .rd-body .story .more-inner p.why{color:color-mix(in srgb,var(--ink) 80%,transparent) !important;font-weight:450}
+  html body #fdm-reader .rd-body .story .more-inner h4{font-size:var(--t-lbl) !important;font-weight:800 !important;letter-spacing:.07em !important;text-transform:uppercase;line-height:1.3 !important;margin-top:22px !important}
+  html body #fdm-reader .rd-body .story .more-inner .why strong{font-size:var(--t-lbl) !important;letter-spacing:.07em;text-transform:uppercase}
+  html body #fdm-reader .rd-body .story .stat b{font-size:22px !important;letter-spacing:-.02em}
+  html body #fdm-reader .rd-body .story .stat span{font-size:12.5px !important;line-height:1.35 !important}
+  html body #fdm-reader .rd-body .story .src,#fdm-reader .story .src a{font-size:12.5px !important;line-height:1.5 !important}
+  /* fiches d'événements, d'hôtels et de vols dans le lecteur */
+  html body #fdm-reader .rd-body .story .evt-title{font-size:15.5px !important;line-height:1.3 !important;font-weight:700 !important;letter-spacing:-.01em}
+  html body #fdm-reader .rd-body .story .evt-desc{font-size:14px !important;line-height:1.5 !important}
+  html body #fdm-reader .rd-body .story .evt-meta{font-size:12.5px !important;line-height:1.45 !important}
+</style><script>/* v56 : une seule taille de titre pour toutes les cartes, la plus grande qui tient partout */
+(function(){ if(!document.body.classList.contains('pager')) return;
+  const main=document.querySelector('main.cats'); if(!main) return;
+  function fits(){ return [...main.querySelectorAll('.story')].every(a=>{ const h=a.querySelector('h3'); if(!h) return true; const ar=a.getBoundingClientRect(); if(!ar.height) return true;
+      const pb=parseFloat(getComputedStyle(a).paddingBottom)||0; return h.scrollHeight<=h.clientHeight+1 && h.getBoundingClientRect().bottom<=ar.bottom-pb+1 && a.scrollHeight<=a.clientHeight+1; }); }
+  function run(){ const mob=innerWidth<=899; let s=mob?16:15.5; const lo=mob?13:12.5;
+    main.style.setProperty('--fsu',s+'px');
+    for(let i=0;i<14&&s>lo&&!fits();i++){ s-=0.5; main.style.setProperty('--fsu',s+'px'); } }
+  let t=null; const later=()=>{ clearTimeout(t); t=setTimeout(run,140); };
+  later(); addEventListener('resize',later); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(later); addEventListener('load',later);
+})();</script>
 </body></html>
