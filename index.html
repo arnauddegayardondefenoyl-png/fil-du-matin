@@ -1194,7 +1194,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Journal d'Arnaud">
 <meta name="fdm-updated" content="2026-11-20T11:30">
-</head>
+<style id="fdm-boot">html:not(.fdm-ready) body{opacity:0}html body{transition:opacity .35s ease}@media (prefers-reduced-motion:reduce){html body{transition:none}}</style></head>
 <body><div id="fdm-splash" aria-hidden="true"><style>/* v52 : animation d'ouverture « le logo qui s'ouvre » (téléphone) */
   #fdm-splash{display:none}
   @media (max-width:899px){
@@ -4082,5 +4082,19 @@
   const wrapT=(b,cls)=>{ if(!b||b.querySelector('.'+cls)) return; [...b.childNodes].forEach(n=>{ if(n.nodeType===3&&n.textContent.trim()){ const s=document.createElement('span'); s.className=cls; s.textContent=n.textContent.trim(); n.replaceWith(s); if(!b.title) b.title=(b.textContent||'').replace(/\d+/g,'').trim(); } }); };
   document.querySelectorAll('.dateline .qbtn').forEach(b=>wrapT(b,'ql')); wrapT(document.getElementById('favBtn'),'fl');
   const bp=document.querySelector('.bp-w'); if(bp&&!bp.title) bp.title='Bons plans';
+})();</script>
+<script>/* v64 : affichage sans à-coups (la page apparaît une fois mise en place) + bulle Bons plans sous son bouton */
+(function(){
+  const H=document.documentElement;
+  let done=false; const show=()=>{ if(done) return; done=true; requestAnimationFrame(()=>requestAnimationFrame(()=>H.classList.add('fdm-ready'))); };
+  const fontsP=(document.fonts&&document.fonts.ready)?Promise.race([document.fonts.ready,new Promise(r=>setTimeout(r,400))]):Promise.resolve();
+  const domP=new Promise(r=>{ if(document.readyState!=='loading') r(); else document.addEventListener('DOMContentLoaded',r,{once:true}); });
+  Promise.all([fontsP,domP]).then(()=>setTimeout(show,180));
+  setTimeout(show,1100);
+  /* Bons plans : la bulle s'ouvre juste sous le bouton (ordinateur) */
+  const btn=document.querySelector('.bp-w'), pop=document.querySelector('.bp-pop');
+  if(btn&&pop) btn.addEventListener('click',()=>{ if(innerWidth<900){ pop.style.left=''; pop.style.top=''; return; }
+    const r=btn.getBoundingClientRect(); const w=pop.offsetWidth||460;
+    pop.style.left=Math.max(16,Math.min(r.left,innerWidth-w-16))+'px'; pop.style.top=(r.bottom+10)+'px'; pop.style.transformOrigin='top left'; });
 })();</script>
 </body></html>
