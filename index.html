@@ -3968,4 +3968,31 @@
   let t=null; const later=()=>{ clearTimeout(t); t=setTimeout(run,140); };
   later(); addEventListener('resize',later); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(later); addEventListener('load',later);
 })();</script>
+<style>/* v57 : bouton CRM + prospect chaud du jour (section Travail) */
+  .nt-crm{display:flex;align-items:center;gap:12px;width:100%;box-sizing:border-box;margin:0 0 8px;padding:10px 14px 10px 10px;border-radius:16px;background:linear-gradient(110deg,#ecebff 0%,#e8f0ff 55%,#e6f6f7 100%);box-shadow:inset 0 0 0 .5px rgba(88,86,214,.16);color:var(--ink);text-decoration:none;font-family:var(--sf,system-ui);contain:inline-size;overflow:hidden;min-width:0;-webkit-tap-highlight-color:transparent;transition:transform .15s,box-shadow .2s}
+  .nt-crm:active{transform:scale(.98)}
+  .nt-crm:hover{box-shadow:inset 0 0 0 .5px rgba(88,86,214,.3),0 4px 14px rgba(88,86,214,.14)}
+  .nt-crm .ti{width:40px;height:40px;flex:none;border-radius:12px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#7b5cff,#5856d6 55%,#0a7c86);box-shadow:0 5px 14px rgba(88,86,214,.3)}
+  .nt-crm .ti svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .nt-crm .tx{flex:1;min-width:0;display:block;overflow:hidden}
+  .nt-crm .tk{display:block;font:750 10.5px var(--sf,system-ui);letter-spacing:.06em;text-transform:uppercase;color:#5856d6;margin-bottom:2px}
+  .nt-crm .tt{display:block;font:800 14.5px/1.2 var(--sf,system-ui);letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .nt-crm .ts{display:block;font:500 12px/1.35 var(--sf,system-ui);color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .nt-crm .go{flex:none;display:flex;align-items:center;gap:4px;height:30px;padding:0 12px;border-radius:999px;background:#5856d6;color:#fff;font:700 12.5px var(--sf,system-ui);white-space:nowrap}
+  .nt-crm .go svg{width:14px;height:14px;fill:none;stroke:#fff;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+  @media (max-width:899px){ .nt-crm{padding:8px 10px 8px 8px;margin-bottom:6px;border-radius:14px} .nt-crm .ti{width:36px;height:36px;border-radius:11px} .nt-crm .go{padding:0 10px;height:28px;font-size:12px} .nt-crm .tk{font-size:10px} }
+</style>
+<script>(function(){
+  const sec=document.querySelector('main.cats .cat.c-work'); if(!sec||sec.querySelector('.nt-crm')) return;
+  const CRM='https://claude.ai/artifact/K2GGm5rHpCqn9GvS593Y13';
+  const tp=document.getElementById('hot-prospect'); const box=tp&&tp.content?tp.content:null;
+  const nm=box&&box.querySelector('b')?box.querySelector('b').textContent.trim():'', dt=box&&box.querySelector('span')?box.querySelector('span').textContent.trim():'';
+  const a=document.createElement('a'); a.className='nt-crm'; a.href=CRM; a.target='_blank'; a.rel='noopener';
+  a.setAttribute('aria-label',nm?'Prospect chaud du jour : '+nm+'. Ouvrir le CRM':'Ouvrir le CRM de prospection');
+  const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  a.innerHTML='<span class="ti"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c.9 3 4.5 4.6 4.5 9a4.5 4.5 0 0 1-9 0c0-2 1-3.3 2-4.2.2 1.6 1 2.6 2 2.9-.5-2.8.2-5.5.5-7.7z"/><path d="M10.3 16.5a1.9 1.9 0 0 0 3.4 0"/></svg></span>'
+    +'<span class="tx"><span class="tk">'+(nm?'Prospect chaud du jour':'Prospection')+'</span><span class="tt">'+(nm?esc(nm):'Ton prospect chaud du jour')+'</span><span class="ts">'+(nm?esc(dt):'Il t\'attend dans ton CRM')+'</span></span>'
+    +'<span class="go">CRM<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span>';
+  const g=sec.querySelector('.grid'); if(g) g.before(a);
+})();</script>
 </body></html>
