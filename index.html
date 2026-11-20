@@ -2704,7 +2704,7 @@
   /* points de pagination */
   const dots=document.createElement('div'); dots.className='pg-dots'; dots.innerHTML=secs.map((sc,i)=>'<button type="button" aria-label="Page '+(i+1)+'"></button>').join(''); main.parentNode.insertBefore(dots,main);
   const keys=['work','news','laurie'];
-  let cur=0; try{ cur=+(sessionStorage.getItem('fdm-pg')||0)||0; }catch(e){}
+  let cur=0; /* v60 : on ouvre toujours sur Travail */
   const W=()=>main.clientWidth;
   function mark(i){ cur=i; $$('button',dots).forEach((b,k)=>b.classList.toggle('on',k===i)); const bar=$('.ios-tabbar'); if(bar) $$('button',bar).forEach(b=>{ const k=keys.indexOf(b.dataset.t); if(k>=0) b.classList.toggle('on',k===i); }); try{ sessionStorage.setItem('fdm-pg',i); }catch(e){} }
   function go(i,anim){ i=Math.max(0,Math.min(secs.length-1,i)); if(main.scrollWidth>main.clientWidth+4) main.scrollTo({left:i*W(),behavior:anim===false?'auto':'smooth'}); else { secs[i].classList.remove('pg-flash'); void secs[i].offsetWidth; secs[i].classList.add('pg-flash'); } mark(i); }
@@ -2712,6 +2712,7 @@
   dots.addEventListener('click',e=>{ const b=e.target.closest('button'); if(b) go($$('button',dots).indexOf(b)); });
   requestAnimationFrame(()=>go(cur,false));
   addEventListener('resize',()=>go(cur,false));
+  let hidAt=0; document.addEventListener('visibilitychange',()=>{ if(document.hidden){ hidAt=Date.now(); return; } if(hidAt&&Date.now()-hidAt>3*60e3&&innerWidth<=899){ const o=document.querySelector('#fdm-reader .story.open'); if(o) setOpen(o,false); go(0,false); } });
   /* lecteur plein écran */
   const rd=document.createElement('div'); rd.id='fdm-reader'; rd.setAttribute('role','dialog'); rd.setAttribute('aria-modal','true');
   rd.innerHTML='<div class="rd-bar"><button type="button" class="rd-close" aria-label="Fermer">✕</button><span class="rd-t"></span><span class="rd-nav"><button type="button" class="rd-prev" aria-label="Article précédent">‹</button><button type="button" class="rd-next" aria-label="Article suivant">›</button></span></div><div class="rd-body"></div>';
@@ -3995,4 +3996,11 @@
     +'<span class="go">CRM<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span>';
   const g=sec.querySelector('.grid'); if(g) g.before(a);
 })();</script>
+<style>/* v59 : boutons du haut à droite sur ordinateur, 2 par ligne */
+  @media (min-width:900px){
+    html body.pager .wrap > .dateline.dateline{display:grid !important;flex-direction:unset !important;grid-template-columns:repeat(2,max-content) !important;gap:6px !important;justify-items:stretch;align-items:stretch}
+    html body.pager .wrap > .dateline.dateline > .bp-w,html body.pager .wrap > .dateline.dateline .qbtn,html body.pager .wrap > .dateline.dateline .tbtn{min-width:0 !important;width:100% !important;box-sizing:border-box}
+  }
+  @media (min-width:900px) and (max-width:1199px){ html body.pager .wrap > .dateline.dateline{grid-template-columns:max-content !important} }
+</style>
 </body></html>
