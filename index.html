@@ -3011,7 +3011,11 @@
   let DATA={}; try{ DATA=JSON.parse(($('#trip-data')||{}).textContent||'{}'); }catch(e){}
   const MO={janv:0,jan:0,'févr':1,fev:1,'fév':1,mars:2,mar:2,avr:3,mai:4,juin:5,juil:6,'août':7,aout:7,sept:8,sep:8,oct:9,nov:10,'déc':11,dec:11};
   /* 1. heure de mise à jour */
-  try{ const m=document.querySelector('meta[name=fdm-updated]'); const mast=$('.mast'); if(m&&mast&&!$('.mast-upd')){ const d=new Date(m.content); if(!isNaN(d)){
+  try{ const m=document.querySelector('meta[name=fdm-updated]'); const mast=$('.mast');
+    let d=null; if(/github\.io$/.test(location.hostname)&&document.lastModified){ d=new Date(document.lastModified); } if((!d||isNaN(d))&&m) d=new Date(m.content);
+    const ed=((($('.dateline span')||{}).textContent)||'').trim().toLowerCase(); const MN=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+    if(d&&!isNaN(d)&&ed&&!(ed.includes(' '+d.getDate()+' '+MN[d.getMonth()])&&ed.includes(String(d.getFullYear())))) d=null;
+    if(d&&mast&&!$('.mast-upd')){ if(!isNaN(d)){
       const now=new Date(); const same=d.toDateString()===now.toDateString(); const hh=d.getHours()+'h'+String(d.getMinutes()).padStart(2,'0');
       const s=document.createElement('span'); s.className='mast-upd'; s.textContent='Mis à jour '+(same?"aujourd'hui":'le '+d.getDate()+' '+['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'][d.getMonth()])+' à '+hh; mast.appendChild(s); } } }catch(e){}
   /* 2. articles lus */
@@ -3042,11 +3046,11 @@
   function addActs(ev,kind){ const foot=$('.evt-foot',ev); if(!foot||$('.x-act',foot)) return;
     const title=(($('.evt-title',ev)||{}).childNodes[0]||{}).textContent||'Sortie'; const loc=($$('.evt-meta span',ev).map(s=>s.textContent).find(s=>/📍/.test(s))||'').replace('📍','').trim();
     const url=(($('.book',ev)||{}).href)||APP;
-    if(kind==='evt'){ const w=evtWhen(ev); if(w){ const b=document.createElement(ios?'button':'a'); b.className='x-act'; b.textContent='📅 Agenda';
+    if(kind==='evt'){ const w=evtWhen(ev); if(w){ const icsOK=ios&&window.top===window.self; const b=document.createElement(icsOK?'button':'a'); b.className='x-act'; b.textContent='📅 Agenda';
         const st=w.h!==null?(w.y+pad(w.mo+1)+pad(w.n)+'T'+pad(w.h)+pad(w.mi)+'00'):(w.y+pad(w.mo+1)+pad(w.n));
         const enD=w.h!==null?new Date(w.y,w.mo,w.n,w.h+2,w.mi):new Date(w.y,w.mo,w.n+1);
         const en=w.h!==null?(enD.getFullYear()+pad(enD.getMonth()+1)+pad(enD.getDate())+'T'+pad(enD.getHours())+pad(enD.getMinutes())+'00'):(enD.getFullYear()+pad(enD.getMonth()+1)+pad(enD.getDate()));
-        if(ios){ b.type='button'; b.addEventListener('click',e=>{ e.stopPropagation(); const esc=s=>s.replace(/[,;\\]/g,m=>'\\'+m).replace(/\n/g,'\\n');
+        if(icsOK){ b.type='button'; b.addEventListener('click',e=>{ e.stopPropagation(); const esc=s=>s.replace(/[,;\\]/g,m=>'\\'+m).replace(/\n/g,'\\n');
             const ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Fil du Matin//FR','BEGIN:VEVENT','UID:'+Date.now()+'@fildumatin','DTSTAMP:'+new Date().toISOString().replace(/[-:]/g,'').slice(0,15)+'Z',
               (w.h!==null?'DTSTART;TZID=Europe/Paris:':'DTSTART;VALUE=DATE:')+st,(w.h!==null?'DTEND;TZID=Europe/Paris:':'DTEND;VALUE=DATE:')+en,'SUMMARY:'+esc(title.trim()),'LOCATION:'+esc(loc),'DESCRIPTION:'+esc(url),'END:VEVENT','END:VCALENDAR'].join('\r\n');
             const a=document.createElement('a'); a.href='data:text/calendar;charset=utf-8,'+encodeURIComponent(ics); a.download='sortie.ics'; document.body.appendChild(a); a.click(); a.remove(); buzz(); }); }
