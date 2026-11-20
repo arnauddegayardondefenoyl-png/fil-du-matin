@@ -1010,6 +1010,9 @@
   article.vols .wk-sat{margin:10px 0 6px}
   article.vols .vx-dur{margin-top:0}
   #volsList{gap:8px;align-items:start}
+  #volsList .evt.fx.fx-cut{display:none !important}
+  .fx-more{display:block;width:100%;margin:10px 0 4px;padding:12px 16px;border:0;border-radius:14px;background:color-mix(in srgb,var(--vols,#0071a4) 10%,var(--card,#fff));color:var(--vols,#0071a4);font:700 14.5px var(--sf,system-ui);cursor:pointer}
+  .fx-more:active{transform:scale(.98)}
   #volsList .evt.fx{position:relative;padding:10px 32px 10px 10px;gap:10px;cursor:pointer}
   #volsList .evt.fx:not(.op) .hx-more{display:none}
   #volsList .evt.fx .hx-more{animation:hxin .28s ease}
@@ -1846,7 +1849,7 @@
       else vMark(null); }
     function goFlight(id){ const art=$('article.vols'); let ev=$('#volsList .evt[data-id="'+id+'"]',art);
       if(!ev){ lss('fdm-vmois',''); lss('fdm-vdur',''); renderVols(); vFit(true); ev=$('#volsList .evt[data-id="'+id+'"]',art); }
-      if(!ev) return; $$('#volsList .evt.fx',art).forEach(x=>x.classList.add('in')); fxOpen(ev,true); }
+      if(!ev) return; if(ev.classList.contains('fx-cut')){ const bt=art.querySelector('.fx-more'); if(bt) bt.click(); } $$('#volsList .evt.fx',art).forEach(x=>x.classList.add('in')); fxOpen(ev,true); }
     function renderVols(){
       const art=$('article.vols'); if(!art) return; const p=P.vols, list=$('#volsList',art);
       const [mo,du]=chipsV(art); topV(art);
@@ -1859,6 +1862,11 @@
       const best=L.length?L.reduce((a,b)=>a.price<=b.price?a:b):null;
       $('[data-count="vols"]',art).textContent=L.length+' séjour'+(L.length>1?'s':'')+' en vol direct au soleil'+(best?' · le moins cher : '+best.city+' à '+eur(best.price)+' à deux':'');
       decorate(list);
+      { const old=art.querySelector('.fx-more'); if(old) old.remove(); const N=10, items=$$('.evt.fx',list);
+        if(matchMedia('(max-width:959px)').matches&&items.length>N){ items.slice(N).forEach(x=>x.classList.add('fx-cut'));
+          const k=items.length-N; const bt=document.createElement('button'); bt.type='button'; bt.className='fx-more'; bt.textContent='Voir les '+k+' autres séjours ▾';
+          bt.addEventListener('click',e=>{ e.stopPropagation(); const open=bt.classList.toggle('on'); items.slice(N).forEach(x=>x.classList.toggle('fx-cut',!open)); bt.textContent=open?'Réduire la liste ▴':'Voir les '+k+' autres séjours ▾'; if(!open) items[N-1].scrollIntoView({block:'nearest',behavior:'smooth'}); });
+          list.after(bt); } }
       $$('.evt.fx',list).forEach((ev,i)=>{ ev.dataset.ord=i; ev.setAttribute('role','button'); ev.tabIndex=0;
         ev.addEventListener('click',e=>{ if(e.target.closest('a,button,.star,.wa')) return; e.stopPropagation(); $$('.evt.fx',list).forEach(x=>x.classList.add('in')); fxOpen(ev,!ev.classList.contains('op')); });
         ev.addEventListener('keydown',e=>{ if((e.key==='Enter'||e.key===' ')&&e.target===ev){ e.preventDefault(); ev.click(); } }); });
