@@ -3310,7 +3310,7 @@
   const mqD=matchMedia('(min-width:900px)');
   function moveBP(){ const b=document.querySelector('.bp-w'), dl=document.querySelector('.wrap > .dateline'); if(!b) return;
     if(mqD.matches&&dl){ if(b.parentNode!==dl) dl.insertBefore(b,dl.firstChild); } else if(b.parentNode!==wrap) wrap.appendChild(b); }
-  function placeWX(){ const w=document.querySelector('.wx-w'), h=document.querySelector('.mast .title'); if(!w||!h||w.hidden) return;
+  function placeWX(){ const w=document.querySelector('.wx-w'), h=document.querySelector('.mast .title'); if(!w||!h||w.hidden||!mqD.matches) return;
     const rg=document.createRange(); rg.selectNodeContents(h); const r=rg.getBoundingClientRect(), wr=wrap.getBoundingClientRect();
     const ww=w.offsetWidth, wh=w.offsetHeight; const lx=r.left-wr.left;
     const left=Math.max(4,Math.round(lx/2-ww/2)); let top=Math.max(6,Math.round(r.top-wr.top+r.height/2-wh/2));
@@ -3348,4 +3348,45 @@
     html body.pager main.cats > section.cat.c-news .story .hero{width:44px !important;height:44px !important}
   }
 </style>
+<style>/* v38 (appli mobile) : bons plans dans Notifs, météo sur la ligne de la date */
+  .bp-notif{display:none}
+  @media (max-width:899px){
+    .bp-w{display:none !important}
+    .bp-notif{display:block;margin-top:14px;padding-top:12px;border-top:.5px solid var(--rule)}
+    .bp-notif .bp-hd{margin:0 2px 6px}
+    .bp-notif .bp-it{padding:9px 6px}
+    #pHier.sheet{max-height:min(78dvh,640px);overflow-y:auto;overscroll-behavior:contain}
+    .wx-w{flex-direction:row !important;gap:5px !important}
+    .wx-row{height:26px !important;padding:0 8px !important;font-size:12px !important}
+    html body .mast .ios-date{display:flex !important;width:max-content !important;margin-left:auto !important;margin-right:10px !important}
+    .bp-notif .bp-hd b{text-transform:none !important;letter-spacing:0 !important;font:800 15px var(--sf,system-ui) !important;color:var(--ink) !important}
+    .bp-notif .bp-hd{align-items:center}
+  }
+  @media (max-width:380px){ html body .mast .ios-date{font-size:10.5px !important;padding:4px 9px !important;letter-spacing:0 !important} .wx-row{padding:0 6px !important;gap:3px !important} }
+</style>
+<script>(function(){
+  const $=(s,r=document)=>r.querySelector(s);
+  const mob=()=>matchMedia('(max-width:899px)').matches;
+  const hp=$('#pHier'); if(!hp) return;
+  function sync(){ const pop=$('.bp-pop'); if(!pop||!pop.innerHTML) return;
+    let box=$('.bp-notif',hp); if(!box){ box=document.createElement('div'); box.className='bp-notif'; hp.appendChild(box); }
+    box.innerHTML=pop.innerHTML.replace('<b>Bons plans</b>','<b>🔔 Bons plans</b>');
+    box.querySelectorAll('.bp-it').forEach((b,i)=>b.addEventListener('click',e=>{ e.stopPropagation(); const src=pop.querySelectorAll('.bp-it')[i]; const hb=$('.qbtn[data-p=pHier]'); if(hb&&hb.getAttribute('aria-expanded')==='true') hb.click(); setTimeout(()=>src&&src.click(),60); }));
+    const n=+(($('.bp-w .bn')||{}).textContent||0); const tab=$('.ios-tabbar [data-t=notif] .badge');
+    if(tab){ if(tab.dataset.base===undefined) tab.dataset.base=tab.textContent.trim()||'0'; const tot=(+tab.dataset.base||0)+(mob()?n:0); tab.textContent=tot; tab.dataset.n=tot; } }
+  const pop=$('.bp-pop'); if(pop) new MutationObserver(sync).observe(pop,{childList:true}); sync();
+  matchMedia('(max-width:899px)').addEventListener&&matchMedia('(max-width:899px)').addEventListener('change',sync);
+  /* météo : sur téléphone, à gauche de la date, sur la même ligne */
+  const wrap=$('.wrap');
+  function shortDate(){ const dp=$('.mast .ios-date'); if(!dp) return; if(!dp.dataset.full) dp.dataset.full=dp.textContent.trim();
+    if(mob()){ const m=dp.dataset.full.match(/^(\S+)\s+(\d+)\s+(\S+)/); if(m){ const j=m[1].slice(0,3)+'.', mo=m[3].toLowerCase(); const ab={janvier:'janv.',février:'févr.',mars:'mars',avril:'avr.',mai:'mai',juin:'juin',juillet:'juil.',août:'août',septembre:'sept.',octobre:'oct.',novembre:'nov.',décembre:'déc.'}[mo]||mo; dp.textContent=j+' '+m[2]+' '+ab; } }
+    else dp.textContent=dp.dataset.full; }
+  shortDate(); addEventListener('resize',shortDate);
+  function placeM(){ if(!mob()) return; const w=$('.wx-w'), dp=$('.mast .ios-date'); if(!w||!dp||!wrap||w.hidden) return;
+    const r=dp.getBoundingClientRect(), wr=wrap.getBoundingClientRect();
+    w.style.setProperty('left','10px','important'); w.style.setProperty('top',Math.round(r.top-wr.top+(r.height-w.offsetHeight)/2)+'px','important'); w.classList.add('placed'); }
+  const o=new MutationObserver(()=>requestAnimationFrame(placeM)); const t=()=>{ const w=$('.wx-w'); if(w) o.observe(w,{attributes:true,attributeFilter:['style','hidden','class']}); else setTimeout(t,300); }; t();
+  addEventListener('resize',()=>requestAnimationFrame(placeM)); setTimeout(placeM,900);
+})();
+</script>
 </body></html>
