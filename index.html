@@ -1200,7 +1200,7 @@
   <div class="dateline">
     <span>Vendredi 20 novembre 2026</span>
     <span class="quick"><button type="button" class="qbtn" data-p="pHier" aria-expanded="false">🏁 Résultats d'hier</button><button type="button" class="qbtn" data-p="pAgenda" aria-expanded="false">📅 À suivre aujourd'hui<span class="cnt">6</span></button></span>
-    <span class="toolbar"><a class="tbtn" href="archive/index.html">📚 Archives</a><button class="tbtn" id="favBtn" type="button">⭐ À garder <span class="cnt" id="favCnt">0</span></button></span>
+    <span class="toolbar"><button class="tbtn" id="favBtn" type="button">⭐ À garder <span class="cnt" id="favCnt">0</span></button></span>
   </div>
 
 
@@ -2679,59 +2679,7 @@
   later(); addEventListener('resize',later); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(later);
 })();
 </script>
-<script>/* v22e : Archives dans une feuille, sans changer de page */
-(function(){
-  const B=document.body, $=(q,el=document)=>el.querySelector(q), $$=(q,el=document)=>[...el.querySelectorAll(q)];
-  if(document.documentElement.classList.contains('fdm-embed')) return;
-  const mapEl=$('.wk-map'); const ROOT=(mapEl&&mapEl.dataset.root)||'';
-  const isArchive=!!$('.archive-banner');
-  const sh=document.createElement('div'); sh.id='fdm-arch'; sh.setAttribute('role','dialog'); sh.setAttribute('aria-modal','true');
-  sh.innerHTML='<div class="ah-bar"><button type="button" class="ah-back" aria-label="Retour aux éditions" hidden><b>‹</b><span>Éditions</span></button><span class="ah-t">Éditions passées</span><button type="button" class="ah-close" aria-label="Revenir à l\'édition du jour"><span>Aujourd\'hui</span></button></div><div class="ah-list"></div><div class="ah-view" hidden><iframe title="Édition passée" loading="eager"></iframe><div class="ah-edge" aria-hidden="true"></div></div>';
-  B.appendChild(sh);
-  const list=$('.ah-list',sh), view=$('.ah-view',sh), fr=$('iframe',sh), back=$('.ah-back',sh), tt=$('.ah-t',sh);
-  let loaded=false, items=[];
-  async function load(){ if(loaded) return; loaded=true; list.innerHTML='<p class="ah-empty">Chargement…</p>';
-    try{ const r=await fetch(ROOT+'archive/index.html',{cache:'no-cache'}); const d=new DOMParser().parseFromString(await r.text(),'text/html');
-      items=$$('#editions li',d).map(li=>{ const a=li.querySelector('a'); return a?{href:ROOT+'archive/'+a.getAttribute('href'),t:a.textContent.trim(),p:((li.querySelector('p')||{}).textContent||'').trim()}:null; }).filter(Boolean);
-    }catch(e){ items=[]; }
-    if(isArchive){ list.insertAdjacentHTML('beforebegin',''); }
-    list.innerHTML=(isArchive?'<button type="button" class="ah-item ah-today" data-today="1"><b>↩︎ Revenir à l\'édition du jour</b></button>':'')+(items.length?items.map((it,i)=>'<button type="button" class="ah-item" data-i="'+i+'"><b>'+it.t+'</b>'+(it.p?'<span>'+it.p.replace(/</g,'&lt;')+'</span>':'')+'<i>›</i></button>').join(''):'<p class="ah-empty">Aucune édition archivée pour l\'instant.</p>');
-  }
-  const HS=(st,h)=>{ try{ history.pushState(st,'',h); }catch(e){} };
-  const cur=()=>{ try{ return history.state||{}; }catch(e){ return {}; } };
-  function openEd(i,fromPop){ const it=items[i]; if(!it) return; if(!fromPop) HS({fdmA:2,i},'#archives/'+i); tt.textContent=innerWidth<500?it.t.replace(/^\S+\s+/,''):it.t; back.hidden=false; view.hidden=false; list.hidden=true; sh.classList.add('ed');
-    if(fr.dataset.src!==it.href){ fr.dataset.src=it.href; view.classList.add('loading'); const u=it.href+'?embed=1'; let done=false; try{ if(fr.contentWindow&&fr.contentWindow.location.href!=='about:blank'){ fr.contentWindow.location.replace(new URL(u,location.href).href); done=true; } }catch(e){} if(!done) fr.src=u; } }
-  fr.addEventListener('load',()=>view.classList.remove('loading'));
-  function toList(fromPop){ if(!fromPop&&cur().fdmA===2){ try{ history.back(); return; }catch(e){} } tt.textContent='Éditions passées'; back.hidden=true; view.hidden=true; list.hidden=false; sh.classList.remove('ed'); }
-  function setTab(on){ const bar=$('.ios-tabbar'); if(!bar) return; const b=$('button[data-t="arch"]',bar); if(b) b.classList.toggle('sel',on); }
-  function open(fromPop){ load(); if(!fromPop) HS({fdmA:1},'#archives'); toList(true); sh.classList.add('on'); B.classList.add('ah-open'); setTab(true); }
-  function close(fromPop){ if(!fromPop){ const s=cur().fdmA; if(s){ try{ history.go(-s); return; }catch(e){} } } sh.classList.remove('on'); B.classList.remove('ah-open'); setTab(false); }
-  window.fdmArch={open,close};
-  list.addEventListener('click',e=>{ const b=e.target.closest('.ah-item'); if(!b) return; if(b.dataset.today){ location.href=ROOT+'index.html'; return; } const it=items[+b.dataset.i]; if(it){ sh.classList.add('go'); location.href=it.href; } });
-  back.addEventListener('click',()=>toList()); $('.ah-close',sh).addEventListener('click',()=>{ if(isArchive){ location.href=ROOT+'index.html'; return; } close(); });
-  /* retour du téléphone / du navigateur */
-  addEventListener('popstate',e=>{ const s=(e.state||{}).fdmA||0;
-    if(s===2){ if(!sh.classList.contains('on')){ load(); sh.classList.add('on'); B.classList.add('ah-open'); setTab(true); } openEd(e.state.i,true); }
-    else if(s===1){ if(!sh.classList.contains('on')) open(true); else toList(true); }
-    else if(sh.classList.contains('on')) close(true); });
-  if(/^#archives/.test(location.hash)){ try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} }
-  /* glisser depuis le bord gauche = retour */
-  let ex=null,ey=0; const edge=$('.ah-edge',sh);
-  [edge,list].forEach(el=>{ el.addEventListener('touchstart',e=>{ const x=e.touches[0].clientX; ex=(el===edge||x<28)?x:null; ey=e.touches[0].clientY; },{passive:true});
-    el.addEventListener('touchend',e=>{ if(ex===null) return; const dx=e.changedTouches[0].clientX-ex, dy=Math.abs(e.changedTouches[0].clientY-ey); ex=null; if(dx>70&&dy<60){ if(!view.hidden) toList(); else close(); } },{passive:true}); });
-  document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&sh.classList.contains('on')){ e.preventDefault(); if(!view.hidden) toList(); else close(); } },true);
-  /* onglet Archives : ouvre / referme la feuille (2e appui = retour fluide) ; les autres onglets la referment */
-  window.addEventListener('click',e=>{ const b=e.target.closest('.ios-tabbar button, .ios-tabbar a'); if(!b) return;
-    const t=b.dataset.t||(/archive/i.test(b.getAttribute('href')||'')?'arch':'');
-    if(t==='arch'){ e.stopImmediatePropagation(); e.preventDefault(); sh.classList.contains('on')?close():open(); return; }
-    if(sh.classList.contains('on')) close(); },true);
-  /* bouton Archives de la ligne de date (ordinateur) */
-  $$('.dateline a.tbtn, .dateline [data-href]').forEach(a=>{ if(/archive/i.test(a.getAttribute('href')||a.dataset.href||'')) a.addEventListener('click',e=>{ e.preventDefault(); e.stopImmediatePropagation(); open(); },true); });
-  /* glisser vers le bas sur la barre pour fermer */
-  let y0=null; $('.ah-bar',sh).addEventListener('touchstart',e=>{ y0=e.touches[0].clientY; },{passive:true});
-  $('.ah-bar',sh).addEventListener('touchend',e=>{ if(y0!==null&&e.changedTouches[0].clientY-y0>60) close(); y0=null; },{passive:true});
-})();
-</script>
+
 <script>/* v23 : appli installable (manifest + service worker) */
 (function(){
   try{ if(!('serviceWorker' in navigator)) return; if(!(location.protocol==='https:'||location.hostname==='localhost')) return;
@@ -2771,20 +2719,5 @@
   }catch(e){}
 })();
 </script>
-<style>/* v27 : retour à l'édition du jour depuis une archive */
-  .arch-home{display:flex;align-items:center;justify-content:center;gap:6px;margin:-4px 0 12px;padding:10px 14px;border-radius:12px;background:var(--tint,#007aff);color:#fff !important;font:700 14px var(--sf,Inter,system-ui,sans-serif);text-decoration:none;box-shadow:0 2px 8px rgba(0,122,255,.25)}
-  .arch-home:active{transform:scale(.98)}
-  html.fdm-embed .arch-home{display:none}
-</style>
-<script>(function(){
-  try{ const ban=document.querySelector('.archive-banner'); if(!ban||document.querySelector('.arch-home')) return;
-    const m=document.querySelector('[data-root]'); const root=(m&&m.dataset.root)||'../../';
-    const a=document.createElement('a'); a.className='arch-home'; a.href=root+'index.html'; a.textContent='↩︎ Revenir à l’édition du jour';
-    ban.insertAdjacentElement('afterend',a);
-    const rm=()=>{ document.querySelectorAll('.toolbar [href="'+root+'index.html"], .toolbar [data-href="'+root+'index.html"]').forEach(x=>x.remove());
-      document.querySelectorAll('.toolbar').forEach(tb=>{ if(![...tb.children].some(c=>getComputedStyle(c).display!=='none')) tb.style.display='none'; }); };
-    rm(); setTimeout(rm,300); addEventListener('load',rm);
-    document.querySelectorAll('.toolbar').forEach(tb=>{ if(![...tb.children].some(c=>getComputedStyle(c).display!=='none')) tb.style.display='none'; });
-  }catch(e){}
-})();</script>
+
 </body></html>
