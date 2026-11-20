@@ -1,7 +1,7 @@
 {
- "name": "Le Fil du Matin",
- "short_name": "Fil du Matin",
- "description": "Un article par passion, choisi pour toi",
+ "name": "Le journal d'Arnaud",
+ "short_name": "Journal d'Arnaud",
+ "description": "Mon journal du matin : travail, actu et sorties avec Laurie",
  "lang": "fr",
  "start_url": "./index.html?source=app",
  "scope": "./",
