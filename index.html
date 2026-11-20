@@ -1848,6 +1848,7 @@
         const mp=$('article.vols .vx-map'); const ref=(mp&&!mp.classList.contains('none'))?mp:list; const off=innerWidth<=820?10:14;
         const go=()=>fdmScrollTo(ref,off); requestAnimationFrame(()=>requestAnimationFrame(go)); setTimeout(()=>{ if(Math.abs(fdmRelTop(ref)-off)>4) go(); },750); }
       else vMark(null); }
+    window.fdmGoFlight=id=>goFlight(id);
     function goFlight(id){ const art=$('article.vols'); let ev=$('#volsList .evt[data-id="'+id+'"]',art);
       if(!ev){ lss('fdm-vmois',''); lss('fdm-vdur',''); renderVols(); vFit(true); ev=$('#volsList .evt[data-id="'+id+'"]',art); }
       if(!ev) return; if(ev.classList.contains('fx-cut')){ const bt=art.querySelector('.fx-more'); if(bt) bt.click(); } $$('#volsList .evt.fx',art).forEach(x=>x.classList.add('in')); fxOpen(ev,true); }
@@ -1929,6 +1930,7 @@
       hxFlip(list,()=>{ $$('.evt.hx.op',list).forEach(x=>{ if(x!==ev){ x.classList.remove('op'); x.setAttribute('aria-expanded','false'); } }); hxHome(list);
         ev.classList.toggle('op',on); ev.setAttribute('aria-expanded',on); if(on){ ev.classList.add('hxtop'); box.insertBefore(ev,box.firstChild); } });
       if(on) requestAnimationFrame(()=>requestAnimationFrame(()=>{ const mp=list.closest('article').querySelector('.wk-map'); const ref=(mp&&!mp.classList.contains('none'))?mp:box; const off=innerWidth<=820?10:14; const go=()=>fdmScrollTo(ref,off); go(); setTimeout(()=>{ if(Math.abs(fdmRelTop(ref)-off)>4) go(); },700); })); }
+    window.fdmGoHotel=id=>goCard(id);
     function goCard(id){
       const art=$('article.weekend'); if(!art) return;
       const h=DATA.hotels.find(x=>x.id===id);
@@ -3164,6 +3166,123 @@
     catch(e){ try{ const s=JSON.parse(localStorage.getItem(KEY)||'null'); if(s&&Date.now()-s.t<6*3600e3) render(s.d); }catch(_){} }
   }
   load(); setInterval(()=>load(true),15*60e3); document.addEventListener('visibilitychange',()=>{ if(!document.hidden) load(); });
+})();
+</script>
+<style>/* v36 : onglet « Bons plans » en haut à gauche */
+  .bp-w{position:absolute;top:calc(14px + env(safe-area-inset-top));left:20px;z-index:21;display:flex;align-items:center;gap:8px;height:32px;padding:0 12px;min-width:150px;border:0;border-radius:10px;background:var(--card,#fff);box-shadow:var(--shadow,0 1px 3px rgba(0,0,0,.08));font:600 12.5px var(--sf,system-ui);color:var(--ink);cursor:pointer}
+  .bp-w .bi{font-size:15px;line-height:1}
+  .bp-w .bn{margin-left:auto;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:#ff3b30;color:#fff;font:700 11px/18px var(--sf,system-ui);text-align:center;box-sizing:border-box}
+  .bp-w .bn.z{background:var(--fill,rgba(120,120,128,.2));color:var(--muted)}
+  .bp-w:hover{box-shadow:0 4px 14px rgba(0,0,0,.12)}
+  .wx-w{top:calc(52px + env(safe-area-inset-top)) !important}
+  .bp-pop{position:fixed;z-index:96;top:calc(56px + env(safe-area-inset-top));left:20px;width:min(460px,calc(100vw - 40px));max-height:calc(100dvh - 80px);overflow-y:auto;background:var(--card,#fff);border-radius:18px;box-shadow:0 18px 50px rgba(0,0,0,.2);padding:16px 14px 14px;opacity:0;transform:translateY(-8px) scale(.98);transform-origin:top left;pointer-events:none;transition:opacity .2s,transform .25s cubic-bezier(.2,.8,.2,1);color:var(--ink)}
+  .bp-pop.on{opacity:1;transform:none;pointer-events:auto}
+  .bp-hd{display:flex;align-items:baseline;gap:8px;margin:0 4px 10px}
+  .bp-hd b{font:800 16px var(--sf,system-ui)}
+  .bp-hd small{font:500 12px var(--sf,system-ui);color:var(--muted)}
+  .bp-sec{margin:10px 4px 6px;font:800 11px var(--sf,system-ui);letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+  .bp-it{all:unset;box-sizing:border-box;display:grid;grid-template-columns:40px 1fr auto;align-items:center;gap:10px;width:100%;padding:10px;border-radius:14px;cursor:pointer;transition:background .15s}
+  .bp-it:hover,.bp-it:focus-visible{background:var(--fill,rgba(120,120,128,.08))}
+  .bp-it + .bp-it{margin-top:2px}
+  .bp-ic{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px}
+  .bp-tx{min-width:0}
+  .bp-t{font:700 14px/1.25 var(--sf,system-ui);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .bp-s{margin-top:2px;font:500 12.5px/1.35 var(--sf,system-ui);color:var(--muted)}
+  .bp-bd{align-self:start;margin-top:2px;padding:3px 8px;border-radius:999px;font:800 11px var(--sf,system-ui);white-space:nowrap}
+  .bp-bd.dn{background:#e3f6ea;color:#127a3e}
+  .bp-bd.nw{background:#e6efff;color:#1f5fd1}
+  .bp-bd.top{background:#fff2e0;color:#a35a00}
+  .bp-empty{margin:8px 4px;font:500 13px var(--sf,system-ui);color:var(--muted)}
+  .bp-ft{margin:10px 4px 0;font:500 11px var(--sf,system-ui);color:var(--muted)}
+  .c-sortie{--bpc:var(--sortie,#d30f45)} .c-weekend{--bpc:var(--urba,#0a7c86)} .c-vols{--bpc:var(--vols,#0071a4)}
+  .bp-sec{color:var(--bpc)} .bp-ic{background:color-mix(in srgb,var(--bpc) 12%,var(--card,#fff))}
+  .bp-bg{position:fixed;inset:0;z-index:95;background:rgba(0,0,0,.18);opacity:0;pointer-events:none;transition:opacity .2s}
+  .bp-bg.on{opacity:1;pointer-events:auto}
+  @keyframes bpFlash{0%,100%{box-shadow:none}30%{box-shadow:0 0 0 3px var(--tint,#007aff)}}
+  .bp-flash{animation:bpFlash 1.6s ease 2}
+  @media (max-width:899px){
+    .bp-w{top:calc(8px + env(safe-area-inset-top));left:6px;height:22px;min-width:0;padding:0 6px;gap:4px;border-radius:8px;font-size:10.5px}
+    .bp-w .bl{display:none}
+    .bp-w .bi{font-size:12px}
+    .bp-w .bn{height:15px;min-width:15px;font-size:9.5px;line-height:15px;padding:0 4px;margin-left:0}
+    .wx-w{top:calc(33px + env(safe-area-inset-top)) !important}
+    .bp-pop{top:auto;bottom:0;left:0;width:100%;max-height:82dvh;border-radius:20px 20px 0 0;padding:18px 12px calc(20px + env(safe-area-inset-bottom));transform:translateY(100%);transform-origin:bottom}
+    .bp-pop.on{transform:none}
+  }
+</style>
+<script>(function(){
+  const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+  const wrap=$('.wrap'); if(!wrap||$('.bp-w')) return;
+  let D={}; try{ D=JSON.parse(($('#trip-data')||{}).textContent||'{}'); }catch(e){}
+  const MO=['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+  const fd=s=>{ const d=new Date(s+'T12:00'); return d.getDate()+' '+MO[d.getMonth()]; };
+  const eur=n=>Math.round(n)+' €';
+  const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const btn=document.createElement('button'); btn.type='button'; btn.className='bp-w'; btn.setAttribute('aria-label','Bons plans détectés depuis hier');
+  btn.innerHTML='<span class="bi">🔔</span><span class="bl">Bons plans</span><span class="bn z">0</span>'; wrap.appendChild(btn);
+  const pop=document.createElement('div'); pop.className='bp-pop'; pop.setAttribute('role','dialog'); const bg=document.createElement('div'); bg.className='bp-bg';
+  document.body.appendChild(bg); document.body.appendChild(pop);
+  const close=()=>{ pop.classList.remove('on'); bg.classList.remove('on'); };
+  btn.addEventListener('click',e=>{ e.stopPropagation(); const on=!pop.classList.contains('on'); pop.classList.toggle('on',on); bg.classList.toggle('on',on); const w=$('.wx-pop.on'); if(w){ w.classList.remove('on'); const b=$('.wx-bd'); if(b) b.classList.remove('on'); } try{ navigator.vibrate&&navigator.vibrate(9); }catch(_){} });
+  bg.addEventListener('click',close); document.addEventListener('keydown',e=>{ if(e.key==='Escape') close(); });
+  let ty=null; pop.addEventListener('touchstart',e=>{ ty=pop.scrollTop<=0?e.touches[0].clientY:null; },{passive:true}); pop.addEventListener('touchend',e=>{ if(ty!==null&&e.changedTouches[0].clientY-ty>70) close(); ty=null; },{passive:true});
+  const evTitle=ev=>((($('.evt-title',ev)||{}).childNodes[0]||{}).textContent||'').trim();
+  const evDate=ev=>$$('.evt-date span',ev).map(x=>x.textContent.trim()).join(' ').toLowerCase();
+  const evPrice=ev=>((($('.price',ev)||{}).textContent)||'').trim();
+  /* ouvrir l'élément concerné */
+  function openArt(cat){ const a=$('article.story.'+cat); if(!a) return null; if(!a.classList.contains('open')){ if(typeof setOpen==='function') setOpen(a,true); else { const h=$('h3',a); if(h) h.click(); } } return a; }
+  function goSortie(title){ const a=openArt('sortie'); if(!a) return; setTimeout(()=>{ const sw=$('.sx-switch button',a); if(sw&&!sw.classList.contains('on')) sw.click();
+      const ev=$$('.evt',a).find(e=>evTitle(e)===title); if(!ev) return; if(!ev.classList.contains('op')&&ev.getAttribute('aria-expanded')!=='true') ev.click();
+      setTimeout(()=>{ if(window.fdmScrollTo) fdmScrollTo(ev,90); else ev.scrollIntoView({block:'center',behavior:'smooth'}); ev.classList.remove('bp-flash'); void ev.offsetWidth; ev.classList.add('bp-flash'); },120); },450); }
+  function goHotel(id){ openArt('weekend'); setTimeout(()=>{ if(window.fdmGoHotel) fdmGoHotel(id); },450); }
+  function goVol(id){ openArt('vols'); setTimeout(()=>{ if(window.fdmGoFlight) fdmGoFlight(id); },450); }
+  function render(items,hasPrev){
+    const n=items.filter(x=>x.badge!=='top').length; const bn=$('.bn',btn); bn.textContent=n; bn.classList.toggle('z',!n);
+    const G=[['sortie','🎭 Sorties à deux','c-sortie'],['weekend','🌊 Week-end bord de mer','c-weekend'],['vols','☀️ Vols au soleil','c-vols']];
+    let h='<div class="bp-hd"><b>Bons plans</b><small>'+(n?n+' nouveauté'+(n>1?'s':'')+' depuis hier':(hasPrev?'rien de neuf depuis hier · les meilleurs du moment':'les meilleurs du moment'))+'</small></div>';
+    if(!items.length) h+='<p class="bp-empty">Rien de nouveau depuis hier. Reviens demain matin !</p>';
+    G.forEach(([k,lab,cls])=>{ const L=items.filter(x=>x.cat===k); if(!L.length) return;
+      h+='<div class="'+cls+'"><div class="bp-sec">'+lab+'</div>'+L.map((x,i)=>'<button type="button" class="bp-it" data-k="'+k+'" data-i="'+items.indexOf(x)+'"><span class="bp-ic">'+x.ic+'</span><span class="bp-tx"><span class="bp-t">'+esc(x.t)+'</span><span class="bp-s">'+esc(x.s)+'</span></span><span class="bp-bd '+x.badge+'">'+esc(x.bl)+'</span></button>').join('')+'</div>'; });
+    h+='<p class="bp-ft">'+(hasPrev?'Comparé à l\'édition d\'hier. ':'')+'Touche un bon plan pour l\'ouvrir directement.</p>';
+    pop.innerHTML=h;
+    $$('.bp-it',pop).forEach(b=>b.addEventListener('click',()=>{ const x=items[+b.dataset.i]; close(); if(x.cat==='sortie') goSortie(x.key); else if(x.cat==='weekend') goHotel(x.key); else goVol(x.key); }));
+  }
+  async function yesterday(){
+    try{ const idx=await fetch('archive/index.html',{cache:'no-cache'}); if(!idx.ok) return null; const d1=new DOMParser().parseFromString(await idx.text(),'text/html');
+      const today=((($('.dateline span')||{}).textContent)||'').trim().toLowerCase();
+      const link=[...d1.querySelectorAll('#editions li a')].find(a=>a.textContent.trim().toLowerCase()!==today); if(!link) return null;
+      const r=await fetch('archive/'+link.getAttribute('href'),{cache:'no-cache'}); if(!r.ok) return null; const doc=new DOMParser().parseFromString(await r.text(),'text/html');
+      let yd={}; try{ yd=JSON.parse((doc.querySelector('#trip-data')||{}).textContent||'{}'); }catch(e){}
+      const ys=[...doc.querySelectorAll('article.sortie .evt')].map(evTitle);
+      return {d:yd,s:new Set(ys)}; }catch(e){ return null; } }
+  async function build(){
+    const Y=await yesterday(); const C=[]; const today=new Date().toISOString().slice(0,10);
+    /* hôtels */
+    const hk=h=>(h.name||'').toLowerCase().normalize('NFD').replace(/[^a-z0-9]/g,'')+'|'+h.sat; const YH=new Map(((Y&&Y.d.hotels)||[]).map(h=>[hk(h),h])); const hBase=YH.size>0;
+    (D.hotels||[]).filter(h=>h.deal&&h.sat>=today).forEach(h=>{ const y=YH.get(hk(h)); const s=h.name+' · '+h.area;
+      const sub=eur(h.price)+' la nuit à deux · sam. '+fd(h.sat);
+      if(y&&h.price<y.price){ const d=y.price-h.price; C.push({cat:'weekend',key:h.id,ic:'🏨',t:h.name,s:sub+' · '+h.area,badge:'dn',bl:'−'+eur(d),sc:40+d*1.2}); }
+      else if(hBase&&!y){ C.push({cat:'weekend',key:h.id,ic:'🏨',t:h.name,s:sub+' · '+h.area,badge:'nw',bl:'Nouveau',sc:25+(h.drop||0)}); }
+      else C.push({cat:'weekend',key:h.id,ic:'🏨',t:h.name,s:sub+' · '+h.area,badge:'top',bl:h.drop?'−'+h.drop+' %':'Bon plan',sc:(h.drop||0)/3,top:1}); });
+    /* vols */
+    const YF=new Map(((Y&&Y.d.flights)||[]).map(f=>[f.id,f]));
+    (D.flights||[]).filter(f=>f.out>=today).forEach(f=>{ const y=YF.get(f.id); const prev=y?y.price:(f.prev||null); const sub=eur(f.price)+' à deux A/R · départ le '+fd(f.out);
+      if(prev&&f.price<prev){ const d=prev-f.price; C.push({cat:'vols',key:f.id,ic:'✈️',t:f.title||f.city,s:sub,badge:'dn',bl:'−'+eur(d),sc:38+d}); }
+      else if(Y&&Y.d.flights&&!y){ C.push({cat:'vols',key:f.id,ic:'✈️',t:f.title||f.city,s:sub,badge:'nw',bl:'Nouveau',sc:22+Math.max(0,150-f.price)/6}); }
+      else C.push({cat:'vols',key:f.id,ic:'✈️',t:f.title||f.city,s:sub,badge:'top',bl:'Petit prix',sc:Math.max(0,150-f.price)/8,top:1}); });
+    /* sorties */
+    $$('article.sortie .evt').forEach(ev=>{ const t=evTitle(ev); if(!t) return; const pr=evPrice(ev); const run=!!ev.closest('.sx-run'); const sub=evDate(ev)+(pr?' · '+pr:'');
+      if(Y&&Y.s.size&&!Y.s.has(t)) C.push({cat:'sortie',key:t,ic:run?'🏃':'🎭',t,s:sub,badge:'nw',bl:'Nouveau',sc:30});
+      else C.push({cat:'sortie',key:t,ic:run?'🏃':'🎭',t,s:sub,badge:'top',bl:'À ne pas rater',sc:run?2:5,top:1}); });
+    const fresh=C.filter(x=>!x.top).sort((a,b)=>b.sc-a.sc);
+    const cnt={}; let out=[]; fresh.forEach(x=>{ if(out.length<5&&(cnt[x.cat]||0)<2){ out.push(x); cnt[x.cat]=(cnt[x.cat]||0)+1; } }); fresh.forEach(x=>{ if(out.length<5&&!out.includes(x)) out.push(x); });
+    if(out.length<5){ const tops=C.filter(x=>x.top).sort((a,b)=>b.sc-a.sc); const seen=new Set(out.map(x=>x.cat)); const pick=[];
+      ['weekend','vols','sortie'].forEach(k=>{ if(!seen.has(k)){ const x=tops.find(y=>y.cat===k); if(x) pick.push(x); } });
+      const cc={}; out.concat(pick).forEach(x=>cc[x.cat]=(cc[x.cat]||0)+1); tops.forEach(x=>{ if(!pick.includes(x)&&(cc[x.cat]||0)<2){ pick.push(x); cc[x.cat]=(cc[x.cat]||0)+1; } }); tops.forEach(x=>{ if(!pick.includes(x)) pick.push(x); }); out=out.concat(pick.slice(0,5-out.length)); }
+    const ord={sortie:0,weekend:1,vols:2}; out.sort((a,b)=>ord[a.cat]-ord[b.cat]||b.sc-a.sc);
+    render(out,!!Y);
+  }
+  build();
 })();
 </script>
 </body></html>
