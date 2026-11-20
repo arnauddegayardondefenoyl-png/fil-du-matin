@@ -1195,7 +1195,33 @@
 <meta name="apple-mobile-web-app-title" content="Journal d'Arnaud">
 <meta name="fdm-updated" content="2026-11-20T11:30">
 </head>
-<body>
+<body><div id="fdm-splash" aria-hidden="true"><style>/* v52 : animation d'ouverture « le logo qui s'ouvre » (téléphone) */
+  #fdm-splash{display:none}
+  @media (max-width:899px){
+    html.fdm-spl #fdm-splash{display:flex;position:fixed;inset:0;z-index:100000;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#fff;animation:spl-out .4s ease 1.25s forwards}
+    #fdm-splash img{width:96px;height:96px;border-radius:24px;box-shadow:0 14px 34px rgba(255,79,122,.28),0 3px 10px rgba(123,92,255,.18);animation:spl-pop .62s cubic-bezier(.3,1.45,.5,1) both}
+    #fdm-splash b{font:800 25px/1.1 -apple-system,BlinkMacSystemFont,"SF Pro Display",system-ui,sans-serif;letter-spacing:-.03em;color:#111;animation:spl-up .42s cubic-bezier(.2,.9,.3,1.1) .42s both}
+    #fdm-splash b span{background:linear-gradient(95deg,#ff8a3d 0%,#ff4f7a 55%,#7b5cff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+    html.fdm-spl body.pager .mast,html.fdm-spl body.pager main.cats .story,html.fdm-spl body.pager .ios-tabbar{animation:spl-in .5s cubic-bezier(.2,.9,.3,1.15) both}
+    html.fdm-spl body.pager .mast{animation-delay:1.3s}
+    html.fdm-spl body.pager main.cats .story:nth-child(1){animation-delay:1.4s} html.fdm-spl body.pager main.cats .story:nth-child(2){animation-delay:1.5s} html.fdm-spl body.pager main.cats .story:nth-child(3){animation-delay:1.6s} html.fdm-spl body.pager main.cats .story:nth-child(n+4){animation-delay:1.65s}
+    html.fdm-spl body.pager .ios-tabbar{animation-name:spl-bar;animation-delay:1.7s}
+  }
+  @keyframes spl-pop{0%{transform:scale(.3);opacity:0}60%{transform:scale(1.12);opacity:1}100%{transform:scale(1)}}
+  @keyframes spl-up{from{transform:translateY(14px);opacity:0}to{transform:none;opacity:1}}
+  @keyframes spl-out{to{opacity:0;visibility:hidden}}
+  @keyframes spl-in{from{transform:translateY(26px);opacity:0}to{transform:none;opacity:1}}
+  @keyframes spl-bar{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+  @media (prefers-reduced-motion:reduce){html.fdm-spl #fdm-splash{display:none !important}}
+</style><img src="img/icon-512.png" alt=""><b>Le journal d'<span>Arnaud</span></b><script>(function(){try{
+  var m=matchMedia('(max-width:899px)').matches, seen=sessionStorage.getItem('fdm-spl');
+  if(!m||seen||document.querySelector('.archive-banner')) { document.getElementById('fdm-splash').remove(); return; }
+  sessionStorage.setItem('fdm-spl','1'); document.documentElement.classList.add('fdm-spl');
+  var sp=document.getElementById('fdm-splash'), done=function(){ document.documentElement.classList.remove('fdm-spl'); if(sp&&sp.parentNode) sp.remove(); };
+  sp.addEventListener('click',function(){ sp.style.animation='spl-out .2s ease forwards'; setTimeout(done,220); });
+  setTimeout(done,2400);
+}catch(e){ var s=document.getElementById('fdm-splash'); if(s) s.remove(); }})();</script></div>
+
 <div class="wrap">
   <header class="mast">
     <h1 class="title">Le journal d'Arnaud</h1>
