@@ -2718,4 +2718,32 @@
   }catch(e){}
 })();
 </script>
+<script>/* v25 : bandeau « Installer l'appli » (hors appli installée, hors claude.ai) */
+(function(){
+  try{
+    const H=document.documentElement;
+    if(H.classList.contains('fdm-embed')) return;
+    if(matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: fullscreen)').matches||navigator.standalone) return;
+    if(window.top!==window.self) return;
+    if(!/github\.io$|^localhost$/.test(location.hostname)) return;
+    let k='fdm-inst-off'; try{ if(+localStorage.getItem(k)>Date.now()) return; }catch(e){}
+    const st=document.createElement('style');
+    st.textContent='.fdm-inst{position:fixed;left:12px;right:12px;bottom:calc(74px + env(safe-area-inset-bottom));z-index:90;display:flex;align-items:center;gap:10px;padding:10px 10px 10px 12px;border-radius:16px;background:var(--card,#fff);color:var(--ink,#111);box-shadow:0 8px 30px rgba(0,0,0,.18);font:500 13.5px/1.3 var(--sf,system-ui);transform:translateY(20px);opacity:0;transition:transform .35s,opacity .35s}.fdm-inst.on{transform:none;opacity:1}.fdm-inst img{width:38px;height:38px;border-radius:9px}.fdm-inst p{flex:1;margin:0}.fdm-inst b{display:block;font-weight:700}.fdm-inst .go{border:0;border-radius:999px;padding:8px 14px;background:var(--tint,#007aff);color:#fff;font:700 13px var(--sf,system-ui);cursor:pointer}.fdm-inst .x{border:0;background:none;color:inherit;opacity:.5;font-size:20px;padding:0 4px;cursor:pointer}@media(min-width:900px){.fdm-inst{left:auto;right:20px;bottom:20px;max-width:380px}}';
+    document.head.appendChild(st);
+    const ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
+    let evt=null;
+    function show(txt,btn){
+      if(document.querySelector('.fdm-inst')) return;
+      const d=document.createElement('div'); d.className='fdm-inst';
+      d.innerHTML='<img src="img/icon-192.png" alt=""><p><b>Installer l’appli</b>'+txt+'</p>'+(btn?'<button class="go">Installer</button>':'')+'<button class="x" aria-label="Fermer">×</button>';
+      document.body.appendChild(d); requestAnimationFrame(()=>d.classList.add('on'));
+      d.querySelector('.x').onclick=()=>{ try{localStorage.setItem(k,Date.now()+7*864e5);}catch(e){} d.remove(); };
+      const g=d.querySelector('.go'); if(g) g.onclick=async()=>{ if(!evt) return; evt.prompt(); try{ const r=await evt.userChoice; if(r&&r.outcome==='accepted') d.remove(); }catch(e){} evt=null; };
+    }
+    addEventListener('beforeinstallprompt',e=>{ e.preventDefault(); evt=e; show('Plein écran, sans barres du navigateur.',true); });
+    addEventListener('appinstalled',()=>{ const d=document.querySelector('.fdm-inst'); if(d) d.remove(); });
+    if(ios) setTimeout(()=>show(/CriOS|FxiOS|EdgiOS/.test(navigator.userAgent)?'Touche … ou le bouton Partager, puis « Sur l’écran d’accueil ».':'Touche le bouton Partager ↑ puis « Sur l’écran d’accueil ».',false),1500);
+  }catch(e){}
+})();
+</script>
 </body></html>
