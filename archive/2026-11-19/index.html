@@ -2145,5 +2145,21 @@
   const h=decodeURIComponent((location.hash||'').slice(1)); if(h) setTimeout(()=>goHere(h),700);
 })();
 </script>
+<style>/* v27 : retour à l'édition du jour depuis une archive */
+  .arch-home{display:flex;align-items:center;justify-content:center;gap:6px;margin:-4px 0 12px;padding:10px 14px;border-radius:12px;background:var(--tint,#007aff);color:#fff !important;font:700 14px var(--sf,Inter,system-ui,sans-serif);text-decoration:none;box-shadow:0 2px 8px rgba(0,122,255,.25)}
+  .arch-home:active{transform:scale(.98)}
+  html.fdm-embed .arch-home{display:none}
+</style>
+<script>(function(){
+  try{ const ban=document.querySelector('.archive-banner'); if(!ban||document.querySelector('.arch-home')) return;
+    const m=document.querySelector('[data-root]'); const root=(m&&m.dataset.root)||'../../';
+    const a=document.createElement('a'); a.className='arch-home'; a.href=root+'index.html'; a.textContent='↩︎ Revenir à l’édition du jour';
+    ban.insertAdjacentElement('afterend',a);
+    const rm=()=>{ document.querySelectorAll('.toolbar [href="'+root+'index.html"], .toolbar [data-href="'+root+'index.html"]').forEach(x=>x.remove());
+      document.querySelectorAll('.toolbar').forEach(tb=>{ if(![...tb.children].some(c=>getComputedStyle(c).display!=='none')) tb.style.display='none'; }); };
+    rm(); setTimeout(rm,300); addEventListener('load',rm);
+    document.querySelectorAll('.toolbar').forEach(tb=>{ if(![...tb.children].some(c=>getComputedStyle(c).display!=='none')) tb.style.display='none'; });
+  }catch(e){}
+})();</script>
 </body>
 </html>
