@@ -3488,4 +3488,43 @@
     sh.classList.add('on'); bg.classList.add('on'); try{ navigator.vibrate&&navigator.vibrate(9); }catch(_){} },true);
 })();
 </script>
+<style>/* v43 : glisser pour fermer Notifs sur mobile */
+  .qp-grab{display:none}
+  @media (max-width:899px){
+    html body .qpanel.bubble.sheet .qp-grab{display:block;position:sticky;top:-2px;z-index:3;height:18px;margin:-6px -4px 2px;background:linear-gradient(var(--card,#fff) 60%,transparent);touch-action:none}
+    html body .qpanel.bubble.sheet .qp-grab::before{content:"";position:absolute;left:50%;top:6px;width:38px;height:5px;border-radius:3px;background:var(--fill,rgba(120,120,128,.25));transform:translateX(-50%)}
+    html body .qpanel.bubble.sheet.qp-drag{transition:none !important}
+    html body .qpanel.bubble.sheet.qp-back{transition:translate .28s cubic-bezier(.2,.9,.3,1.2),opacity .28s !important}
+    html body .qpanel.bubble.sheet.qp-out{transition:translate .2s ease-in,opacity .2s ease-in !important;opacity:0}
+    .qp-tip{position:fixed;left:50%;transform:translateX(-50%);z-index:9999;padding:6px 12px;border-radius:999px;background:rgba(0,0,0,.72);color:#fff;font:600 12.5px var(--sf,system-ui);pointer-events:none;opacity:0;transition:opacity .15s}
+  }
+</style>
+<script>(function(){
+  const mob=()=>matchMedia('(max-width:899px)').matches;
+  const TH=60; let p=null,sc=null,y0=null,mode=0,dy=0;
+  const tip=document.createElement('div'); tip.className='qp-tip'; document.body.appendChild(tip);
+  const grab=()=>document.querySelectorAll('.qpanel').forEach(q=>{ if(!q.querySelector(':scope > .qp-grab')){ const g=document.createElement('div'); g.className='qp-grab'; q.insertBefore(g,q.firstChild); } });
+  grab();
+  const btn=q=>document.querySelector('.qbtn[data-p="'+q.id+'"]');
+  const max=()=>sc.scrollHeight-sc.clientHeight;
+  const atTop=()=>sc.scrollTop<=2, atBot=()=>sc.scrollTop>=max()-3;
+  function shut(q){ const b=btn(q); q.classList.remove('qp-drag'); q.classList.add('qp-out'); q.style.translate='0 '+(mode===1?'110%':'-40px');
+    setTimeout(()=>{ if(b&&b.getAttribute('aria-expanded')==='true') b.click(); q.classList.remove('qp-out'); q.style.translate=''; },190); try{navigator.vibrate&&navigator.vibrate(8)}catch(_){} }
+  addEventListener('touchstart',e=>{ y0=null; p=null; if(!mob()||e.touches.length!==1) return;
+    const q=e.target.closest('.qpanel.sheet'); if(!q||q.hidden) return; if(e.target.closest('input,textarea,select,.wk-map,.vx-map')) return;
+    p=q; sc=q; y0=e.touches[0].clientY; mode=0; dy=0; },{passive:true,capture:true});
+  addEventListener('touchmove',e=>{ if(y0===null||!p) return; const d=e.touches[0].clientY-y0; const onGrab=e.target.closest&&e.target.closest('.qp-grab');
+    if(!mode){ if(d>4&&(atTop()||onGrab)) mode=1; else if(d<-4&&atBot()) mode=-1; else if(Math.abs(d)>8){ y0=null; return; } else return; }
+    if((mode===1&&d<0)||(mode===-1&&d>0)){ dy=0; p.style.translate=''; tip.style.opacity=0; return; }
+    if(e.cancelable) e.preventDefault();
+    dy=d; const s=mode===1?d*.8:-Math.min(90,Math.abs(d)*.4);
+    p.classList.add('qp-drag'); p.classList.remove('qp-back'); p.style.translate='0 '+s+'px';
+    const ok=Math.abs(d)>TH; const r=p.getBoundingClientRect(); tip.style.top=Math.max(12,(mode===1?r.top-34:r.top-34))+'px';
+    tip.textContent=ok?'Relâche pour fermer':(mode===1?'↓ Glisse pour fermer':'↑ Glisse pour fermer'); tip.style.opacity=Math.min(1,Math.abs(d)/30);
+  },{passive:false,capture:true});
+  const fin=()=>{ if(!p) return; const q=p,m=mode; p=null; y0=null; mode=0; tip.style.opacity=0; if(!m) return;
+    if(Math.abs(dy)>TH){ mode=m; shut(q); mode=0; return; }
+    q.classList.remove('qp-drag'); q.classList.add('qp-back'); q.style.translate=''; setTimeout(()=>q.classList.remove('qp-back'),300); };
+  addEventListener('touchend',fin,{passive:true,capture:true}); addEventListener('touchcancel',fin,{passive:true,capture:true});
+})();</script>
 </body></html>
