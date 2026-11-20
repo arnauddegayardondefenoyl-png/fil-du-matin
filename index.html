@@ -1215,12 +1215,22 @@
   @media (prefers-reduced-motion:reduce){html.fdm-spl #fdm-splash{display:none !important}}
 </style><img src="img/icon-512.png" alt=""><b>Le journal d'<span>Arnaud</span></b><script>(function(){try{
   var m=matchMedia('(max-width:899px)').matches, seen=sessionStorage.getItem('fdm-spl');
-  if(!m||seen||document.querySelector('.archive-banner')) { document.getElementById('fdm-splash').remove(); return; }
+  if(true) { document.getElementById('fdm-splash').remove(); return; } /* v66 : l'intro du scorpion remplace le logo */
   sessionStorage.setItem('fdm-spl','1'); document.documentElement.classList.add('fdm-spl');
   var sp=document.getElementById('fdm-splash'), done=function(){ document.documentElement.classList.remove('fdm-spl'); if(sp&&sp.parentNode) sp.remove(); };
   sp.addEventListener('click',function(){ sp.style.animation='spl-out .2s ease forwards'; setTimeout(done,220); });
   setTimeout(done,1700);
-}catch(e){ var s=document.getElementById('fdm-splash'); if(s) s.remove(); }})();</script></div>
+}catch(e){ var s=document.getElementById('fdm-splash'); if(s) s.remove(); }})();</script></div><div id="sc-intro" aria-hidden="true"><style>/* v66 : intro — le scorpion seul, puis la page apparaît derrière pendant qu'il rejoint le titre */
+  #sc-intro{position:fixed;inset:0;z-index:100001;pointer-events:none}
+  #sc-intro .sci-bg{position:absolute;inset:0;background:var(--paper,#f2f2f7);will-change:opacity}
+  #sc-intro .sci-s{position:absolute;left:50%;top:44%;width:min(30vmin,240px);height:min(30vmin,240px);margin:calc(min(30vmin,240px) / -2) 0 0 calc(min(30vmin,240px) / -2);will-change:transform;transform-origin:50% 50%;animation:sci-pop .7s cubic-bezier(.3,1.5,.5,1) both}
+  #sc-intro .sci-s svg{width:100%;height:100%;display:block}
+  @media (max-width:899px){ #sc-intro .sci-s{width:46vw;height:46vw;margin:-23vw 0 0 -23vw;top:42%} }
+  @keyframes sci-pop{0%{transform:scale(.2) rotate(-25deg);opacity:0}60%{transform:scale(1.06) rotate(6deg);opacity:1}100%{transform:none;opacity:1}}
+  html.sc-intro .mast .title .fdm-sc{visibility:hidden}
+  html.sc-intro body{opacity:1 !important;transition:none !important}
+  @media (prefers-reduced-motion:reduce){ #sc-intro{display:none} html.sc-intro .mast .title .fdm-sc{visibility:visible} }
+</style><div class="sci-bg"></div><div class="sci-s"><svg class="sci-svg" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="fdmScGi" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#ff8a3d"/><stop offset=".5" stop-color="#ff4f7a"/><stop offset="1" stop-color="#7b5cff"/></linearGradient></defs><g fill="url(#fdmScGi)" stroke="url(#fdmScGi)" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke-width="1.3"><path d="M11.6 24.4l-1.7 3M14.4 25l-.5 3.1M17.2 25l.9 3M19.8 24l1.8 2.5"/></g><ellipse cx="15" cy="22" rx="6" ry="3.4" stroke="none"/><circle cx="8.7" cy="21.4" r="2.7" stroke="none"/><circle cx="21.6" cy="20.2" r="2.3" stroke="none"/><circle cx="24.6" cy="17" r="2.1" stroke="none"/><circle cx="25.9" cy="13.2" r="1.9" stroke="none"/><circle cx="24.9" cy="9.6" r="1.7" stroke="none"/><circle cx="22.2" cy="7.6" r="1.5" stroke="none"/><path d="M21 7.3c-1.7.1-2.6 1.4-2.4 3.2l1.3-1.8z" stroke-width=".8"/><g fill="none" stroke-width="1.6"><path d="M7.2 19.6l-2.4-3.4"/><path d="M4.8 16.2c-1.6-.3-2.6-1.4-2.6-2.8M4.8 16.2c.3-1.5-.1-2.8-1.1-3.6"/><path d="M7 22.8l-2.9 1.4"/><path d="M4.1 24.2c-1.5-.6-2.8-.2-3.4.9M4.1 24.2c-.9 1.2-1 2.6-.2 3.5"/></g></g></svg></div><script>document.documentElement.classList.add('sc-intro');</script></div>
 
 <div class="wrap">
   <header class="mast">
@@ -4097,48 +4107,25 @@
     const r=btn.getBoundingClientRect(); const w=pop.offsetWidth||460;
     pop.style.left=Math.max(16,Math.min(r.left,innerWidth-w-16))+'px'; pop.style.top=(r.bottom+10)+'px'; pop.style.transformOrigin='top left'; });
 })();</script>
-<style>/* v65 : à chaque chargement, le scorpion arrive en grand puis se pose dans le titre */
-  .sc-fly{position:fixed;z-index:99990;pointer-events:none;will-change:transform,opacity;filter:drop-shadow(0 14px 26px rgba(255,79,122,.28))}
-  .sc-fly svg{width:100%;height:100%;display:block;animation:none !important}
-  html.sc-wait .mast .title .fdm-sc{visibility:hidden}
-  .sc-glow{position:fixed;z-index:99989;pointer-events:none;border-radius:50%;background:radial-gradient(circle,rgba(255,79,122,.22),rgba(123,92,255,.12) 45%,transparent 70%)}
-</style>
-<script>(function(){
-  const H=document.documentElement;
-  if(matchMedia('(prefers-reduced-motion:reduce)').matches) return;
-  H.classList.add('sc-wait');
-  let started=false;
-  function start(){ if(started) return; started=true;
-    const sc=document.querySelector('.mast .title .fdm-sc'); if(!sc||!sc.animate){ H.classList.remove('sc-wait'); return; }
-    const r=sc.getBoundingClientRect(); if(!r.width){ H.classList.remove('sc-wait'); return; }
-    const fly=document.createElement('div'); fly.className='sc-fly'; fly.style.cssText+='left:'+r.left+'px;top:'+r.top+'px;width:'+r.width+'px;height:'+r.height+'px';
-    fly.innerHTML=sc.outerHTML.replace(/id="fdmScG"/,'id="fdmScGf"').replace(/url\(#fdmScG\)/g,'url(#fdmScGf)'); document.body.appendChild(fly);
-    const big=Math.min(innerWidth,innerHeight)*(innerWidth<900?.46:.3), s=big/r.width;
-    const cx=innerWidth/2, cy=innerHeight*(innerWidth<900?.42:.45);
-    const dx=cx-(r.left+r.width/2), dy=cy-(r.top+r.height/2);
-    const T=(x,y,k,a)=>'translate('+x+'px,'+y+'px) scale('+k+') rotate('+a+'deg)';
-    const glow=document.createElement('div'); glow.className='sc-glow'; const g=big*1.9; glow.style.cssText+='left:'+(cx-g/2)+'px;top:'+(cy-g/2)+'px;width:'+g+'px;height:'+g+'px'; document.body.appendChild(glow);
-    glow.animate([{opacity:0,transform:'scale(.6)'},{opacity:1,transform:'scale(1)',offset:.3},{opacity:1,offset:.5},{opacity:0,transform:'scale(1.15)'}],{duration:1500,easing:'ease-out',fill:'forwards'}).onfinish=()=>glow.remove();
-    try{navigator.vibrate&&navigator.vibrate([6,40,6])}catch(_){}
-    const an=fly.animate([
-      {transform:T(dx,dy,s*.25,-24),opacity:0},
-      {transform:T(dx,dy,s*1.08,7),opacity:1,offset:.2},
-      {transform:T(dx,dy,s*.97,-5),offset:.3},
-      {transform:T(dx,dy,s,3),offset:.38},
-      {transform:T(dx,dy,s,0),offset:.46,easing:'cubic-bezier(.55,0,.25,1)'},
-      {transform:T(dx*.18,dy*.18-12,1.5,-10),offset:.86,easing:'cubic-bezier(.3,1.4,.5,1)'},
-      {transform:T(0,0,1,0),opacity:1}
-    ],{duration:1600,fill:'forwards'});
-    an.onfinish=()=>{ H.classList.remove('sc-wait'); sc.animate([{transform:'scale(1.25) rotate(-8deg)'},{transform:'scale(.95) rotate(4deg)'},{transform:'none'}],{duration:380,easing:'ease-out'}); setTimeout(()=>fly.remove(),30); };
-    setTimeout(()=>{ if(fly.isConnected){ H.classList.remove('sc-wait'); fly.remove(); } },2600);
+
+<script>/* v66 : départ de l'intro du scorpion */
+(function(){
+  const H=document.documentElement, ov=document.getElementById('sc-intro'); if(!ov) return;
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches){ ov.remove(); H.classList.remove('sc-intro'); return; }
+  const t0=performance.now(); let gone=false;
+  const end=()=>{ if(gone) return; gone=true; H.classList.remove('sc-intro'); const sc=document.querySelector('.mast .title .fdm-sc'); if(sc&&sc.animate) sc.animate([{transform:'scale(1.22) rotate(-8deg)'},{transform:'scale(.96) rotate(3deg)'},{transform:'none'}],{duration:420,easing:'ease-out'}); ov.remove(); };
+  function fly(){
+    const sc=document.querySelector('.mast .title .fdm-sc'), s=ov.querySelector('.sci-s'), bg=ov.querySelector('.sci-bg');
+    if(!sc||!s||!s.animate){ end(); return; }
+    const r=sc.getBoundingClientRect(), q=s.getBoundingClientRect(); if(!r.width||!q.width){ end(); return; }
+    s.style.animation='none';
+    const dx=(r.left+r.width/2)-(q.left+q.width/2), dy=(r.top+r.height/2)-(q.top+q.height/2), k=r.width/q.width;
+    const D=innerWidth<900?950:1050;
+    s.animate([{transform:'translate(0,0) scale(1) rotate(0)'},{transform:'translate(0,-10px) scale(1.04) rotate(-4deg)',offset:.14},{transform:'translate('+dx+'px,'+dy+'px) scale('+k+') rotate(0)'}],{duration:D,easing:'cubic-bezier(.6,0,.2,1)',fill:'forwards'}).onfinish=end;
+    bg.animate([{opacity:1},{opacity:1,offset:.12},{opacity:0}],{duration:D*.95,easing:'cubic-bezier(.4,0,.2,1)',fill:'forwards'});
+    try{navigator.vibrate&&navigator.vibrate(8)}catch(_){}
   }
-  function waitReady(){
-    const ready=()=>H.classList.contains('fdm-ready')&&!(H.classList.contains('fdm-spl')&&document.getElementById('fdm-splash'));
-    if(ready()) return setTimeout(start,220);
-    const mo=new MutationObserver(()=>{ if(ready()){ mo.disconnect(); setTimeout(start,220); } }); mo.observe(H,{attributes:true,attributeFilter:['class']});
-    const sp=document.getElementById('fdm-splash'); if(sp){ const mo2=new MutationObserver(()=>{ if(!document.getElementById('fdm-splash')&&ready()){ mo2.disconnect(); setTimeout(start,220); } }); mo2.observe(document.body,{childList:true}); }
-    setTimeout(()=>{ if(!started) start(); },3500);
-  }
-  waitReady();
-})();</script>
-</body></html>
+  let started=false; const go=()=>{ if(started) return; started=true; const wait=Math.max(0,750-(performance.now()-t0)); setTimeout(()=>requestAnimationFrame(()=>requestAnimationFrame(fly)),wait); };
+  if(H.classList.contains('fdm-ready')) go(); else { const mo=new MutationObserver(()=>{ if(H.classList.contains('fdm-ready')){ mo.disconnect(); go(); } }); mo.observe(H,{attributes:true,attributeFilter:['class']}); }
+  setTimeout(go,1800); setTimeout(end,4200);
+})();</script></body></html>
