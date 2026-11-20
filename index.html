@@ -3400,4 +3400,23 @@
   }
   @media (max-width:380px){ html body .mast .ios-date{font-size:11.5px !important;padding:4px 10px !important} }
 </style>
+<style>/* v40 : barre du bas flottante, plus aérée (téléphone) */
+  @media (max-width:899px){
+    html body .ios-tabbar{left:12px !important;right:12px !important;bottom:calc(10px + env(safe-area-inset-bottom)) !important;padding:7px !important;gap:4px !important;border-radius:26px !important;border-top:0 !important;justify-content:space-between !important;
+      background:color-mix(in srgb,var(--card,#fff) 82%,transparent) !important;backdrop-filter:saturate(180%) blur(24px) !important;-webkit-backdrop-filter:saturate(180%) blur(24px) !important;
+      box-shadow:0 10px 30px rgba(0,0,0,.12),0 2px 8px rgba(0,0,0,.06),inset 0 0 0 .5px rgba(0,0,0,.06) !important}
+    html body .ios-tabbar button{flex:1 1 0 !important;height:54px !important;padding:0 !important;gap:3px !important;border-radius:19px !important;justify-content:center !important;
+      font:600 10.5px var(--sf,system-ui) !important;letter-spacing:.01em;color:color-mix(in srgb,var(--ink) 50%,transparent) !important;transition:background .25s,color .25s,transform .15s !important;--tc:var(--tint,#007aff)}
+    html body .ios-tabbar button[data-t="work"]{--tc:#5856d6} html body .ios-tabbar button[data-t="news"]{--tc:#e07a00} html body .ios-tabbar button[data-t="laurie"]{--tc:#e0245e} html body .ios-tabbar button[data-t="notif"]{--tc:#ff3b30} html body .ios-tabbar button[data-t="fav"]{--tc:#d99100}
+    html body .ios-tabbar button svg{width:23px !important;height:23px !important;transition:transform .3s cubic-bezier(.3,1.4,.5,1) !important}
+    html body .ios-tabbar button:active{transform:scale(.94)}
+    html body .ios-tabbar button.on,html body .ios-tabbar button.sel{color:var(--tc) !important;background:color-mix(in srgb,var(--tc) 13%,transparent) !important}
+    html body .ios-tabbar button.on svg,html body .ios-tabbar button.sel svg{transform:translateY(-1px) scale(1.06)}
+    html body .ios-tabbar button.on span,html body .ios-tabbar button.sel span{font-weight:700}
+    html body .ios-tabbar .badge{top:5px !important;left:calc(50% + 5px) !important;min-width:17px !important;height:17px !important;font:700 10.5px/17px var(--sf,system-ui) !important;box-shadow:0 0 0 2px var(--card,#fff)}
+    html body.pager main.cats{padding-bottom:calc(84px + env(safe-area-inset-bottom)) !important}
+    .fdm-inst{bottom:calc(84px + env(safe-area-inset-bottom)) !important}
+  }
+  @media (max-width:360px){ html body .ios-tabbar{left:8px !important;right:8px !important;gap:2px !important} html body .ios-tabbar button{font-size:10px !important} }
+</style>
 </body></html>
