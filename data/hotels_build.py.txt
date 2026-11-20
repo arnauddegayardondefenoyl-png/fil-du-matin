@@ -1,0 +1,172 @@
+#!/usr/bin/env python3
+"""Le Fil du Matin - carte Week-end : met a jour l'historique des prix et produit hotels[] et moves[].
+
+Usage :
+  python3 hotels_build.py HISTO.json AUJOURDHUI(AAAA-MM-JJ) SORTIE.json brut1.json [brut2.json ...]
+Chaque brut*.json : {"sat":"AAAA-MM-JJ","zone":"emeraude|armor|morb|baule","properties":[...]}
+(properties = le tableau properties[] renvoye tel quel par SerpApi google_hotels).
+HISTO.json est reecrit en place. SORTIE.json = {"hotels":[...],"moves":[...],"read":{sat:date du dernier releve}}.
+"""
+import json, sys, math, re, statistics, unicodedata, datetime as dt
+
+BRUZ = (48.024, -1.746)
+TOWNS = {
+ "Saint-Malo": (48.649, -2.007), "Dinard": (48.632, -2.061), "Cancale": (48.676, -1.851),
+ "Saint-Lunaire": (48.635, -2.110), "Saint-Briac-sur-Mer": (48.620, -2.133), "Saint-Cast-le-Guildo": (48.630, -2.256),
+ "Erquy": (48.632, -2.464), "Le Val-André": (48.590, -2.550), "Saint-Quay-Portrieux": (48.650, -2.830),
+ "Binic": (48.601, -2.826), "Paimpol": (48.778, -3.047), "Perros-Guirec": (48.815, -3.443),
+ "Ploumanac'h": (48.830, -3.483), "Trégastel": (48.817, -3.510), "Trébeurden": (48.770, -3.567),
+ "Locquirec": (48.692, -3.645), "Roscoff": (48.726, -3.985), "Carnac": (47.584, -3.078),
+ "La Trinité-sur-Mer": (47.586, -3.030), "Quiberon": (47.484, -3.120), "Saint-Pierre-Quiberon": (47.520, -3.140),
+ "Arzon": (47.548, -2.890), "Larmor-Plage": (47.706, -3.380), "Damgan": (47.518, -2.580), "Billiers": (47.530, -2.480),
+ "Piriac-sur-Mer": (47.380, -2.545), "La Turballe": (47.347, -2.510), "Le Croisic": (47.292, -2.512),
+ "Batz-sur-Mer": (47.278, -2.480), "Le Pouliguen": (47.270, -2.430), "La Baule": (47.286, -2.390),
+ "Pornichet": (47.264, -2.340), "Pornic": (47.115, -2.100), "Préfailles": (47.130, -2.218),
+ "Concarneau": (47.875, -3.918), "Bénodet": (47.875, -4.106), "Fouesnant": (47.894, -4.012),
+}
+BAD = re.compile(r"camping|résidence|residence|appart|apartment|studio|villa |villa$|^villa|gîte|gite|chambres? d'h|maison d'h|location|\bT[1-4]\b|love|logement|mobil", re.I)
+SEA = re.compile(r"\bmer\b|plage|océan|ocean|front de mer|baie|thalasso|vue sur|marin|port\b|côte|cote|sillon|digue", re.I)
+MOIS = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."]
+
+def km(a, b):
+    R = 6371; p1, p2 = math.radians(a[0]), math.radians(b[0]); dl = math.radians(b[1] - a[1]); dp = p2 - p1
+    h = math.sin(dp / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(dl / 2) ** 2
+    return 2 * R * math.asin(math.sqrt(h))
+
+def town(lat, lon):
+    n, d = min(((t, km((lat, lon), c)) for t, c in TOWNS.items()), key=lambda x: x[1])
+    return n, d
+
+def zone(lat, lon):
+    if lat >= 48.45: return "nord"
+    if lon < -3.9: return "finis"
+    if lon < -2.45: return "morb"
+    return "loire"
+
+def walk_min(s):
+    m = re.search(r"(\d+)\s*min", s or ""); return int(m.group(1)) if m else None
+
+def seaside(p, dtown):
+    if dtown > 2.5: return False
+    am = " ".join(p.get("amenities") or [])
+    if "Beach access" in am: return True
+    for np in p.get("nearby_places") or []:
+        if re.search(r"plage|beach|grève|greve|sillon", np.get("name", ""), re.I):
+            w = [walk_min(t.get("duration")) for t in np.get("transportations", []) if t.get("type") == "Walking"]
+            w = [x for x in w if x is not None]
+            if not w or min(w) <= 12: return True
+    return bool(SEA.search((p.get("name") or "") + " " + (p.get("description") or "")))
+
+def clean(name):
+    name = re.split(r"\s+[|–-]\s+", name)[0].strip()
+    name = re.sub(r"^Restaurant\s+(H[ôo]tel)", r"\1", name, flags=re.I)
+    name = re.sub(r"\s*\d\s*étoiles?\b", "", name, flags=re.I)
+    return re.sub(r"\s{2,}", " ", name).strip()
+
+def show(name, t):
+    n = clean(name)
+    for c in [t] + list(TOWNS):
+        if n.lower().endswith(" " + c.lower()) and len(n) - len(c) > 8:
+            n = n[: -len(c) - 1].strip(); break
+    return n
+
+def slug(x):
+    x = unicodedata.normalize("NFKD", x).encode("ascii", "ignore").decode().lower()
+    return re.sub(r"[^a-z0-9]+", "-", x).strip("-")
+
+AMN = {"Spa": "spa", "Indoor pool": "pool", "Hot tub": "hottub", "Beach access": "beach", "Restaurant": "resto", "Pet-friendly": "pets"}
+
+def main():
+    histf, today, outf, raws = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4:]
+    H = json.load(open(histf))
+    hotels = H.setdefault("hotels", {})
+    # migration de l'ancien format obs[sat] = {price, seen, ...}
+    for v in hotels.values():
+        for s, o in list(v.get("obs", {}).items()):
+            if "hist" not in o:
+                o["hist"] = [[o.get("seen", s), o["price"]]] if o.get("price") else []
+    tok = {v.get("token"): k for k, v in hotels.items() if v.get("token")}
+    read = H.setdefault("read", {})
+    for rf in raws:
+        R = json.load(open(rf)); sat = R["sat"]; read[sat] = today
+        for p in R.get("properties") or []:
+            price = (p.get("rate_per_night") or {}).get("extracted_lowest")
+            g = p.get("gps_coordinates") or {}
+            if not price or "latitude" not in g or p.get("type") not in (None, "hotel"): continue
+            nm = clean(p.get("name", ""))
+            if BAD.search(nm): continue
+            if (p.get("reviews") or 0) < 80 or (p.get("overall_rating") or 0) < 4.3: continue
+            lat, lon = g["latitude"], g["longitude"]
+            if km(BRUZ, (lat, lon)) > 200: continue
+            t, dtown = town(lat, lon)
+            if not seaside(p, dtown): continue
+            key = tok.get(p.get("property_token")) or nm
+            v = hotels.setdefault(key, {})
+            if p.get("property_token"): v["token"] = p["property_token"]; tok[p["property_token"]] = key
+            v.update({"name": v.get("name") or nm, "rating": p.get("overall_rating"), "reviews": p.get("reviews"),
+                      "stars": p.get("extracted_hotel_class"), "lat": round(lat, 5), "lon": round(lon, 5),
+                      "link": p.get("link") or v.get("link"), "desc": p.get("description") or v.get("desc"),
+                      "amen": [AMN[a] for a in (p.get("amenities") or []) if a in AMN], "sea": True,
+                      "deal_g": p.get("deal_description")})
+            o = v.setdefault("obs", {}).setdefault(sat, {"hist": []})
+            o["hist"] = [h for h in o["hist"] if h[0] != today] + [[today, price]]
+            o["hist"] = o["hist"][-12:]
+            o["price"], o["seen"] = price, today
+    # on oublie les observations de plus de 26 semaines
+    lim = (dt.date.fromisoformat(today) - dt.timedelta(weeks=26)).isoformat()
+    for v in hotels.values():
+        v["obs"] = {s: o for s, o in v.get("obs", {}).items() if s >= lim}
+    H["updated"] = today
+    json.dump(H, open(histf, "w"), ensure_ascii=False, indent=1)
+
+    # samedis a venir (4)
+    d0 = dt.date.fromisoformat(today); first = d0 + dt.timedelta(days=(5 - d0.weekday()) % 7)
+    sats = [(first + dt.timedelta(weeks=i)).isoformat() for i in range(4)]
+    out, moves = [], []
+    for key, v in hotels.items():
+        if not v.get("sea") and not v.get("coast_ok"):
+            # ancien historique (avant la regle bord de mer) : on garde seulement s'il est pres d'une ville cotiere
+            if "lat" not in v or town(v["lat"], v["lon"])[1] > 2.5: continue
+        if "lat" not in v: continue
+        t, dtown = town(v["lat"], v["lon"])
+        for i, s in enumerate(sats):
+            o = v.get("obs", {}).get(s)
+            if not o or not o.get("price"): continue
+            if (d0 - dt.date.fromisoformat(o["seen"])).days > 7: continue
+            price = o["price"]
+            others = [x["price"] for ss, x in v["obs"].items() if ss != s and x.get("price")]
+            ref = statistics.median(others) if len(others) >= 2 else None
+            drop = round((ref - price) / ref * 100) if ref else None
+            gd = re.search(r"(\d+)\s*%", v.get("deal_g") or "")
+            deal = bool((drop is not None and drop >= 15) or (gd and int(gd.group(1)) >= 15))
+            prev = o["hist"][-2] if len(o.get("hist", [])) >= 2 else None
+            e = {"id": slug(show(v.get("name") or key, t))[:28].strip("-") + "-" + s[5:].replace("-", ""),
+                 "wk": "w%d" % (i + 1), "sat": s, "name": show(v.get("name") or key, t),
+                 "area": t if dtown <= 3.5 else "près de " + t, "zone": zone(v["lat"], v["lon"]), "coast": True,
+                 "lat": v["lat"], "lon": v["lon"], "km": round(km(BRUZ, (v["lat"], v["lon"]))),
+                 "rating": v.get("rating"), "reviews": v.get("reviews"), "stars": v.get("stars"),
+                 "price": price, "ref": round(ref) if ref else None,
+                 "lo": min(others) if others else None, "hi": max(others) if others else None,
+                 "drop": drop, "deal": deal, "amen": v.get("amen", []), "site": v.get("link"),
+                 "bk": "https://www.booking.com/searchresults.fr.html?ss=" + re.sub(r"\s+", "+", show(v.get("name") or key, t) + " " + t) + "&checkin=" + s + "&checkout=" + (dt.date.fromisoformat(s) + dt.timedelta(days=1)).isoformat() + "&group_adults=2&no_rooms=1&group_children=0",
+                 "desc": v.get("desc") or "", "seen": o["seen"]}
+            if v.get("address"): e["addr"] = v["address"]
+            if prev and prev[1] != price:
+                e["prev"], e["prevd"] = prev[1], prev[0]
+                moves.append({"id": e["id"], "name": e["name"], "area": e["area"], "sat": s, "from": prev[1], "to": price,
+                              "since": prev[0], "deal": deal})
+            out.append(e)
+    # 15 meilleurs bons plans par week-end (les plus fortes baisses d'abord)
+    keep = []
+    for s in sats:
+        L = sorted([e for e in out if e["sat"] == s and e["deal"]], key=lambda e: (-(e["drop"] or 0), e["price"]))
+        keep += L[:15]
+    ids = {e["id"] for e in keep}
+    moves.sort(key=lambda m: (m["to"] - m["from"], m["to"]))
+    json.dump({"hotels": keep, "moves": [m for m in moves if m["to"] < m["from"]][:6],
+               "ups": [m for m in moves if m["to"] > m["from"]][-3:], "read": {s: read.get(s) for s in sats},
+               "tracked": sum(1 for v in hotels.values() if v.get("sea"))}, open(outf, "w"), ensure_ascii=False)
+    print("hotels", len(keep), "par samedi", {s: sum(1 for e in keep if e["sat"] == s) for s in sats}, "baisses", len([m for m in moves if m["to"] < m["from"]]))
+
+if __name__ == "__main__":
+    main()
