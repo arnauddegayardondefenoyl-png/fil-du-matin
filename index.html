@@ -3404,6 +3404,7 @@
   function moveBP(){ const b=document.querySelector('.bp-w'), dl=document.querySelector('.wrap > .dateline'); if(!b) return;
     if(mqD.matches&&dl){ if(b.parentNode!==dl) dl.insertBefore(b,dl.firstChild); } else if(b.parentNode!==wrap) wrap.appendChild(b); }
   function placeWX(){ const w=document.querySelector('.wx-w'), h=document.querySelector('.mast .title'); if(!w||!h||w.hidden||!mqD.matches) return;
+    w.classList.add('placed'); w.style.removeProperty('left'); w.style.removeProperty('top'); return; /* v61 : position fixe, en miroir des boutons */
     const rg=document.createRange(); rg.selectNodeContents(h); const r=rg.getBoundingClientRect(), wr=wrap.getBoundingClientRect();
     const ww=w.offsetWidth, wh=w.offsetHeight; const lx=r.left-wr.left;
     const left=Math.max(4,Math.round(lx/2-ww/2)); let top=Math.max(6,Math.round(r.top-wr.top+r.height/2-wh/2));
@@ -4014,5 +4015,19 @@
 </style>
 <script>(function(){ document.querySelectorAll('.dateline .qbtn').forEach(b=>{ b.childNodes.forEach(n=>{ if(n.nodeType===3&&/ (aujourd'hui|d'hier)\s*$/.test(n.textContent)){ const m=n.textContent.match(/^(.*?)( (?:aujourd'hui|d'hier))(\s*)$/); if(!m) return; const s=document.createElement('span'); s.className='lbl-x'; s.textContent=m[2].trim(); n.textContent=m[1]; n.after(s); } }); }); })();</script>
 <style>
+</style>
+<style>/* v61 : météo alignée en miroir des boutons (ordinateur) */
+  @media (min-width:900px){
+    html body .wrap > .wx-w{top:calc(14px + env(safe-area-inset-top)) !important;left:20px !important;right:auto !important;transform:none !important;gap:6px !important;flex-direction:column !important;opacity:1 !important}
+    html body .wrap > .wx-w .wx-row{height:32px !important;min-width:190px !important;padding:0 12px !important;gap:9px !important;border-radius:10px !important;font-size:12.5px !important;box-shadow:var(--shadow,0 1px 3px rgba(0,0,0,.08)) !important}
+    html body .wrap > .wx-w .wx-row .wi{width:18px !important;height:18px !important}
+    html body .wrap > .wx-w .wx-row b{font-size:13px !important}
+  }
+  @media (min-width:900px) and (max-width:1199px){
+    html body .wrap > .wx-w{left:14px !important;gap:5px !important}
+    html body .wrap > .wx-w .wx-row{height:27px !important;min-width:150px !important;padding:0 8px !important;gap:6px !important;border-radius:9px !important;font-size:11px !important}
+    html body .wrap > .wx-w .wx-row .wi{width:15px !important;height:15px !important}
+    html body .wrap > .wx-w .wx-row b{font-size:11.5px !important}
+  }
 </style>
 </body></html>
