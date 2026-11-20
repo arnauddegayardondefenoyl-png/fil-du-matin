@@ -3527,4 +3527,31 @@
     q.classList.remove('qp-drag'); q.classList.add('qp-back'); q.style.translate=''; setTimeout(()=>q.classList.remove('qp-back'),300); };
   addEventListener('touchend',fin,{passive:true,capture:true}); addEventListener('touchcancel',fin,{passive:true,capture:true});
 })();</script>
+<style>/* v44 : glisser « À garder » vers la droite pour le fermer (mobile) */
+  @media (max-width:899px){
+    #favs.fv-drag{transition:none !important}
+    #favs .fv-hint{position:absolute;left:6px;top:50%;width:4px;height:44px;margin-top:-22px;border-radius:3px;background:var(--fill,rgba(120,120,128,.25));pointer-events:none}
+  }
+  @media (min-width:900px){ #favs .fv-hint{display:none} }
+</style>
+<script>(function(){
+  const box=document.getElementById('favs'); if(!box) return;
+  const mob=()=>matchMedia('(max-width:899px)').matches;
+  const h=document.createElement('i'); h.className='fv-hint'; box.appendChild(h);
+  let x0=null,y0=0,t0=0,mode=0,dx=0;
+  box.addEventListener('touchstart',e=>{ x0=null; if(!mob()||!box.classList.contains('show')||e.touches.length!==1) return; if(e.target.closest('input,textarea,select')) return;
+    x0=e.touches[0].clientX; y0=e.touches[0].clientY; t0=Date.now(); mode=0; dx=0; },{passive:true});
+  box.addEventListener('touchmove',e=>{ if(x0===null) return; const d=e.touches[0].clientX-x0, v=e.touches[0].clientY-y0;
+    if(!mode){ if(Math.abs(d)<8&&Math.abs(v)<8) return; if(d>0&&Math.abs(d)>Math.abs(v)*1.2) mode=1; else { x0=null; return; } }
+    if(e.cancelable) e.preventDefault();
+    dx=Math.max(0,d); box.classList.add('fv-drag'); box.style.transform='translateX('+dx+'px)';
+  },{passive:false});
+  const fin=()=>{ if(x0===null) return; x0=null; if(!mode) return; mode=0;
+    const fast=dx>30&&dx/(Date.now()-t0)>0.5;
+    box.classList.remove('fv-drag');
+    if(dx>box.offsetWidth*0.3||fast){ box.style.transform=''; box.classList.remove('show'); try{navigator.vibrate&&navigator.vibrate(8)}catch(_){} }
+    else box.style.transform='';
+    dx=0; };
+  box.addEventListener('touchend',fin,{passive:true}); box.addEventListener('touchcancel',fin,{passive:true});
+})();</script>
 </body></html>
