@@ -1161,6 +1161,19 @@
   #fdm-arch .ah-view{flex:1;position:relative;min-height:0}
   #fdm-arch .ah-view iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:var(--paper,#f2f2f7)}
   #fdm-arch .ah-view.loading::after{content:"Chargement de l'édition…";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:500 14px var(--sf);color:var(--muted);background:var(--paper,#f2f2f7)}
+  /* v26 : édition passée en plein écran, retour facile */
+  #fdm-arch .ah-back{width:auto !important;padding:0 12px 0 8px !important;border-radius:999px !important;gap:2px;font:600 15px var(--sf) !important;color:var(--tint) !important}
+  #fdm-arch .ah-back b{font-size:24px;line-height:1;margin-top:-2px;font-weight:500}
+  #fdm-arch .ah-close{width:auto !important;padding:0 14px !important;border-radius:999px !important;background:var(--tint,#007aff) !important;color:#fff !important;font:700 14px var(--sf) !important}
+  #fdm-arch .ah-close::before{content:"↩︎";margin-right:5px;font-weight:600}
+  #fdm-arch .ah-t{flex:1;min-width:0;font-size:15px}
+  #fdm-arch .ah-edge{position:absolute;left:0;top:0;bottom:0;width:18px;z-index:2}
+  @media (max-width:820px){
+    body.ah-open:has(#fdm-arch.ed) .ios-tabbar{display:none !important}
+    body.ah-open #fdm-arch.ed{z-index:99}
+    body.ah-open #fdm-arch.ed .ah-view{margin-bottom:0 !important}
+    #fdm-arch.ed .ah-view iframe{padding-bottom:env(safe-area-inset-bottom);box-sizing:border-box}
+  }
   #fdm-arch:not(.ed) ~ .ios-tabbar, body.ah-open .ios-tabbar{z-index:95}
   body.ah-open #fdm-arch .ah-view{padding-bottom:0}
   body.ah-open #fdm-arch.ed .ah-view{margin-bottom:calc(70px + env(safe-area-inset-bottom))}
@@ -2673,7 +2686,7 @@
   const mapEl=$('.wk-map'); const ROOT=(mapEl&&mapEl.dataset.root)||'';
   const isArchive=!!$('.archive-banner');
   const sh=document.createElement('div'); sh.id='fdm-arch'; sh.setAttribute('role','dialog'); sh.setAttribute('aria-modal','true');
-  sh.innerHTML='<div class="ah-bar"><button type="button" class="ah-back" aria-label="Retour aux éditions" hidden>‹</button><span class="ah-t">Éditions passées</span><button type="button" class="ah-close" aria-label="Fermer">✕</button></div><div class="ah-list"></div><div class="ah-view" hidden><iframe title="Édition passée" loading="eager"></iframe></div>';
+  sh.innerHTML='<div class="ah-bar"><button type="button" class="ah-back" aria-label="Retour aux éditions" hidden><b>‹</b><span>Éditions</span></button><span class="ah-t">Éditions passées</span><button type="button" class="ah-close" aria-label="Revenir à l\'édition du jour"><span>Aujourd\'hui</span></button></div><div class="ah-list"></div><div class="ah-view" hidden><iframe title="Édition passée" loading="eager"></iframe><div class="ah-edge" aria-hidden="true"></div></div>';
   B.appendChild(sh);
   const list=$('.ah-list',sh), view=$('.ah-view',sh), fr=$('iframe',sh), back=$('.ah-back',sh), tt=$('.ah-t',sh);
   let loaded=false, items=[];
@@ -2684,16 +2697,28 @@
     if(isArchive){ list.insertAdjacentHTML('beforebegin',''); }
     list.innerHTML=(isArchive?'<button type="button" class="ah-item ah-today" data-today="1"><b>↩︎ Revenir à l\'édition du jour</b></button>':'')+(items.length?items.map((it,i)=>'<button type="button" class="ah-item" data-i="'+i+'"><b>'+it.t+'</b>'+(it.p?'<span>'+it.p.replace(/</g,'&lt;')+'</span>':'')+'<i>›</i></button>').join(''):'<p class="ah-empty">Aucune édition archivée pour l\'instant.</p>');
   }
-  function openEd(i){ const it=items[i]; if(!it) return; tt.textContent=it.t; back.hidden=false; view.hidden=false; list.hidden=true; sh.classList.add('ed');
-    if(fr.dataset.src!==it.href){ fr.dataset.src=it.href; view.classList.add('loading'); fr.src=it.href+'?embed=1'; } }
+  const HS=(st,h)=>{ try{ history.pushState(st,'',h); }catch(e){} };
+  const cur=()=>{ try{ return history.state||{}; }catch(e){ return {}; } };
+  function openEd(i,fromPop){ const it=items[i]; if(!it) return; if(!fromPop) HS({fdmA:2,i},'#archives/'+i); tt.textContent=innerWidth<500?it.t.replace(/^\S+\s+/,''):it.t; back.hidden=false; view.hidden=false; list.hidden=true; sh.classList.add('ed');
+    if(fr.dataset.src!==it.href){ fr.dataset.src=it.href; view.classList.add('loading'); const u=it.href+'?embed=1'; let done=false; try{ if(fr.contentWindow&&fr.contentWindow.location.href!=='about:blank'){ fr.contentWindow.location.replace(new URL(u,location.href).href); done=true; } }catch(e){} if(!done) fr.src=u; } }
   fr.addEventListener('load',()=>view.classList.remove('loading'));
-  function toList(){ tt.textContent='Éditions passées'; back.hidden=true; view.hidden=true; list.hidden=false; sh.classList.remove('ed'); }
+  function toList(fromPop){ if(!fromPop&&cur().fdmA===2){ try{ history.back(); return; }catch(e){} } tt.textContent='Éditions passées'; back.hidden=true; view.hidden=true; list.hidden=false; sh.classList.remove('ed'); }
   function setTab(on){ const bar=$('.ios-tabbar'); if(!bar) return; const b=$('button[data-t="arch"]',bar); if(b) b.classList.toggle('sel',on); }
-  function open(){ load(); toList(); sh.classList.add('on'); B.classList.add('ah-open'); setTab(true); }
-  function close(){ sh.classList.remove('on'); B.classList.remove('ah-open'); setTab(false); }
+  function open(fromPop){ load(); if(!fromPop) HS({fdmA:1},'#archives'); toList(true); sh.classList.add('on'); B.classList.add('ah-open'); setTab(true); }
+  function close(fromPop){ if(!fromPop){ const s=cur().fdmA; if(s){ try{ history.go(-s); return; }catch(e){} } } sh.classList.remove('on'); B.classList.remove('ah-open'); setTab(false); }
   window.fdmArch={open,close};
   list.addEventListener('click',e=>{ const b=e.target.closest('.ah-item'); if(!b) return; if(b.dataset.today){ location.href=ROOT+'index.html'; return; } openEd(+b.dataset.i); });
-  back.addEventListener('click',toList); $('.ah-close',sh).addEventListener('click',close);
+  back.addEventListener('click',()=>toList()); $('.ah-close',sh).addEventListener('click',()=>{ if(isArchive){ location.href=ROOT+'index.html'; return; } close(); });
+  /* retour du téléphone / du navigateur */
+  addEventListener('popstate',e=>{ const s=(e.state||{}).fdmA||0;
+    if(s===2){ if(!sh.classList.contains('on')){ load(); sh.classList.add('on'); B.classList.add('ah-open'); setTab(true); } openEd(e.state.i,true); }
+    else if(s===1){ if(!sh.classList.contains('on')) open(true); else toList(true); }
+    else if(sh.classList.contains('on')) close(true); });
+  if(/^#archives/.test(location.hash)){ try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} }
+  /* glisser depuis le bord gauche = retour */
+  let ex=null,ey=0; const edge=$('.ah-edge',sh);
+  [edge,list].forEach(el=>{ el.addEventListener('touchstart',e=>{ const x=e.touches[0].clientX; ex=(el===edge||x<28)?x:null; ey=e.touches[0].clientY; },{passive:true});
+    el.addEventListener('touchend',e=>{ if(ex===null) return; const dx=e.changedTouches[0].clientX-ex, dy=Math.abs(e.changedTouches[0].clientY-ey); ex=null; if(dx>70&&dy<60){ if(!view.hidden) toList(); else close(); } },{passive:true}); });
   document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&sh.classList.contains('on')){ e.preventDefault(); if(!view.hidden) toList(); else close(); } },true);
   /* onglet Archives : ouvre / referme la feuille (2e appui = retour fluide) ; les autres onglets la referment */
   window.addEventListener('click',e=>{ const b=e.target.closest('.ios-tabbar button, .ios-tabbar a'); if(!b) return;
