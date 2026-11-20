@@ -3404,7 +3404,7 @@
   function moveBP(){ const b=document.querySelector('.bp-w'), dl=document.querySelector('.wrap > .dateline'); if(!b) return;
     if(mqD.matches&&dl){ if(b.parentNode!==dl) dl.insertBefore(b,dl.firstChild); } else if(b.parentNode!==wrap) wrap.appendChild(b); }
   function placeWX(){ const w=document.querySelector('.wx-w'), h=document.querySelector('.mast .title'); if(!w||!h||w.hidden||!mqD.matches) return;
-    w.classList.add('placed'); w.style.removeProperty('left'); w.style.removeProperty('top'); return; /* v61 : position fixe, en miroir des boutons */
+    w.classList.add('placed'); return; /* v61 : position fixe, en miroir des boutons */
     const rg=document.createRange(); rg.selectNodeContents(h); const r=rg.getBoundingClientRect(), wr=wrap.getBoundingClientRect();
     const ww=w.offsetWidth, wh=w.offsetHeight; const lx=r.left-wr.left;
     const left=Math.max(4,Math.round(lx/2-ww/2)); let top=Math.max(6,Math.round(r.top-wr.top+r.height/2-wh/2));
@@ -4008,8 +4008,12 @@
     html body.pager .wrap > .dateline.dateline svg,html body.pager .wrap > .dateline.dateline .bi{width:13px !important;height:13px !important;font-size:12px !important}
     html body.pager .wrap > .dateline.dateline .cnt,html body.pager .wrap > .dateline.dateline .bn,html body.pager .wrap > .dateline.dateline .badge{min-width:15px !important;height:15px !important;line-height:15px !important;font-size:9.5px !important;padding:0 4px !important}
   }
+  @media (min-width:1200px){
+    html body.pager .wrap > .dateline.dateline > .bp-w,html body.pager .wrap > .dateline.dateline .qbtn,html body.pager .wrap > .dateline.dateline #favBtn{height:30px !important;min-height:0 !important;padding:0 10px !important;gap:7px !important;font-size:12px !important}
+    html body .wrap > .wx-w .wx-row{height:30px !important;min-width:170px !important}
+  }
   @media (min-width:900px) and (max-width:1199px){ html body.pager .wrap > .dateline.dateline #favBtn{height:27px !important;min-height:0 !important;padding:0 8px !important;font-size:11px !important;border-radius:9px !important} html body.pager .wrap > .dateline.dateline #favBtn *{font-size:inherit} }
-  @media (min-width:900px) and (max-width:989px){ html body.pager .wrap > .dateline.dateline .lbl-x{display:none} }
+  @media (min-width:900px) and (max-width:1199px){ html body.pager .wrap > .dateline.dateline .lbl-x{display:none} }
   html body.pager .wrap > .dateline.dateline .qbtn .lbl-x{margin-left:calc(.3em - var(--qg,5px))}
   html body.pager .wrap > .dateline.dateline .qbtn{--qg:5px}
 </style>
@@ -4030,4 +4034,30 @@
     html body .wrap > .wx-w .wx-row b{font-size:11.5px !important}
   }
 </style>
+<style>@media (min-width:1200px){ html body .wrap > .wx-w.wx-w .wx-row{height:30px !important;min-width:170px !important} }</style>
+<script>/* v62 : météo et boutons posés juste au-dessus des colonnes, alignés sur leurs bords (ordinateur) */
+(function(){
+  const wrap=document.querySelector('.wrap'); if(!wrap) return;
+  const mq=matchMedia('(min-width:900px)');
+  function place(){
+    const dl=wrap.querySelector(':scope > .dateline'), wx=wrap.querySelector(':scope > .wx-w');
+    const cats=[...document.querySelectorAll('main.cats > section.cat')];
+    if(!mq.matches||!cats.length){ [dl,wx].forEach(e=>{ if(e){ e.style.removeProperty('top'); e.style.removeProperty('left'); e.style.removeProperty('right'); } }); return; }
+    const wr=wrap.getBoundingClientRect(), a=cats[0].getBoundingClientRect(), z=cats[cats.length-1].getBoundingClientRect();
+    const gap=12, ti=document.querySelector('.mast .title'); let tr=null; if(ti){ const rg=document.createRange(); rg.selectNodeContents(ti); tr=rg.getBoundingClientRect(); }
+    const hits=(l,r,top,bot)=>tr&&l<tr.right+12&&r>tr.left-12&&top<tr.bottom+4&&bot>tr.top-4;
+    function put(el,side,edge){ const h=el.offsetHeight, w=el.offsetWidth; let top=Math.round(a.top-wr.top-h-gap);
+      const L=side==='l'?a.left:z.right-w, R=L+w; if(hits(L,R,wr.top+top,wr.top+top+h)) top=14;
+      el.style.setProperty(side==='l'?'left':'right',edge+'px','important'); el.style.setProperty('top',Math.max(6,top)+'px','important'); }
+    const lvl=el=>{ const h=el.offsetHeight; return Math.round(a.top-wr.top-h-gap); };
+    let ok=true; if(dl){ const top=lvl(dl), w=dl.offsetWidth; if(hits(z.right-w,z.right,wr.top+top,wr.top+top+dl.offsetHeight)) ok=false; }
+    if(wx&&!wx.hidden){ const top=lvl(wx), w=wx.offsetWidth; if(hits(a.left,a.left+w,wr.top+top,wr.top+top+wx.offsetHeight)) ok=false; }
+    const set=(el,side,edge)=>{ el.style.setProperty(side,edge+'px','important'); el.style.setProperty('top',(ok?Math.max(6,lvl(el)):14)+'px','important'); };
+    if(dl) set(dl,'right',Math.round(wr.right-z.right));
+    if(wx&&!wx.hidden) set(wx,'left',Math.round(a.left-wr.left));
+  }
+  let t=null; const later=()=>{ clearTimeout(t); t=setTimeout(place,60); };
+  later(); addEventListener('resize',later); addEventListener('load',later); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(later);
+  const wx=()=>wrap.querySelector(':scope > .wx-w'); const ob=new MutationObserver(later); const hook=()=>{ const w=wx(); if(w) ob.observe(w,{attributes:true,attributeFilter:['hidden'],childList:true}); else setTimeout(hook,300); }; hook();
+})();</script>
 </body></html>
