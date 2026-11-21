@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-20",
+ "updated": "2026-11-21",
  "note": "Prix d'une nuit samedi→dimanche pour 2 adultes, Google Hotels via SerpApi. Historique utilisé pour « moins cher que d'habitude ».",
  "hotels": {
   "Hôtel Le Nouveau Monde": {
@@ -68,9 +68,9 @@
    "link": "http://www.lagapa.com/",
    "obs": {
     "2026-11-21": {
-     "price": 193,
+     "price": 159,
      "booking": 237,
-     "seen": "2026-11-20",
+     "seen": "2026-11-21",
      "src": "details",
      "hist": [
       [
@@ -80,6 +80,10 @@
       [
        "2026-11-20",
        193
+      ],
+      [
+       "2026-11-21",
+       159
       ]
      ]
     }
@@ -618,14 +622,18 @@
    "link": "https://hotelsudbretagne.fr/",
    "obs": {
     "2026-11-21": {
-     "price": 89,
+     "price": 90,
      "booking": 98,
-     "seen": "2026-11-19",
+     "seen": "2026-11-21",
      "src": "details",
      "hist": [
       [
        "2026-11-19",
        89
+      ],
+      [
+       "2026-11-21",
+       90
       ]
      ]
     },
@@ -666,14 +674,16 @@
    },
    "address": "42 Bd de la République, 44380 Pornichet, France",
    "lat": 47.26,
-   "lon": -2.3369,
+   "lon": -2.33694,
    "name": "Hôtel Sud Bretagne",
    "stars": 4,
    "amen": [
     "pets",
     "spa"
    ],
-   "desc": "Chambres élégantes dans hôtel chic avec restaurant raffiné, spa et piscine extérieure."
+   "desc": "Chambres élégantes dans hôtel chic avec restaurant raffiné, spa et piscine extérieure.",
+   "sea": true,
+   "deal_g": null
   },
   "Hotel & Spa Amoria La Baule, a member of Radisson Individuals": {
    "token": "ChoIve_trOGw857kARoNL2cvMTF5ZHI1a19fdhAB",
@@ -683,13 +693,17 @@
    "link": "https://www.radissonhotels.com/en-us/hotels/radisson-individuals-amoria-labaule?cid=a:se+b:gmb+c:emea+i:local+e:ri+d:ukirwe+h:FROBCAAA",
    "obs": {
     "2026-11-21": {
-     "price": 134,
-     "seen": "2026-11-19",
+     "price": 109,
+     "seen": "2026-11-21",
      "src": "search",
      "hist": [
       [
        "2026-11-19",
        134
+      ],
+      [
+       "2026-11-21",
+       109
       ]
      ]
     },
@@ -727,8 +741,21 @@
      ]
     }
    },
-   "lat": 47.2818,
-   "lon": -2.3903
+   "lat": 47.28179,
+   "lon": -2.39034,
+   "name": "Hotel & Spa Amoria La Baule, a member of Radisson Individuals",
+   "stars": 4,
+   "desc": null,
+   "amen": [
+    "pool",
+    "hottub",
+    "pets",
+    "spa",
+    "beach",
+    "resto"
+   ],
+   "sea": true,
+   "deal_g": null
   },
   "Hôtel Lutétia & Spa": {
    "token": "ChcIqP723MnHwe5XGgsvZy8xdGZwejZmahAB",
@@ -738,8 +765,8 @@
    "link": "https://www.lutetia-labaule.com/",
    "obs": {
     "2026-11-21": {
-     "price": 99,
-     "seen": "2026-11-20",
+     "price": 101,
+     "seen": "2026-11-21",
      "src": "search",
      "hist": [
       [
@@ -749,6 +776,10 @@
       [
        "2026-11-20",
        99
+      ],
+      [
+       "2026-11-21",
+       101
       ]
      ]
     },
@@ -1343,8 +1374,8 @@
    "link": "https://mgallery.accor.com/hotels/6956?merchantid=seo-maps-FR-6956&sourceid=aw-cen&utm_source=google+Maps&utm_medium=seo+maps&utm_campaign=seo+maps&utm_term=MGallery-Launch",
    "obs": {
     "2026-11-21": {
-     "price": 177,
-     "seen": "2026-11-20",
+     "price": 173,
+     "seen": "2026-11-21",
      "src": "search",
      "hist": [
       [
@@ -1354,6 +1385,10 @@
       [
        "2026-11-20",
        177
+      ],
+      [
+       "2026-11-21",
+       173
       ]
      ]
     },
@@ -1652,8 +1687,8 @@
    "link": "http://restaurant-didier-meril.com/",
    "obs": {
     "2026-11-21": {
-     "price": 124,
-     "seen": "2026-11-20",
+     "price": 85,
+     "seen": "2026-11-21",
      "src": "search",
      "hist": [
       [
@@ -1663,6 +1698,10 @@
       [
        "2026-11-20",
        124
+      ],
+      [
+       "2026-11-21",
+       85
       ]
      ]
     },
@@ -2280,10 +2319,14 @@
       [
        "2026-11-20",
        68
+      ],
+      [
+       "2026-11-21",
+       68
       ]
      ],
      "price": 68,
-     "seen": "2026-11-20"
+     "seen": "2026-11-21"
     }
    }
   },
@@ -2311,10 +2354,14 @@
       [
        "2026-11-20",
        204
+      ],
+      [
+       "2026-11-21",
+       204
       ]
      ],
      "price": 204,
-     "seen": "2026-11-20"
+     "seen": "2026-11-21"
     }
    }
   },
@@ -2486,7 +2533,7 @@
    "token": "ChcI6JXz-L66p4pgGgsvZy8xdGRyZHI5ehAB",
    "name": "Hôtel Mercure La Baule Majestic",
    "rating": 4.5,
-   "reviews": 1163,
+   "reviews": 1164,
    "stars": 4,
    "lat": 47.28062,
    "lon": -2.40833,
@@ -2505,10 +2552,14 @@
       [
        "2026-11-20",
        114
+      ],
+      [
+       "2026-11-21",
+       115
       ]
      ],
-     "price": 114,
-     "seen": "2026-11-20"
+     "price": 115,
+     "seen": "2026-11-21"
     },
     "2026-12-05": {
      "hist": [
@@ -2640,10 +2691,14 @@
       [
        "2026-11-20",
        78
+      ],
+      [
+       "2026-11-21",
+       76
       ]
      ],
-     "price": 78,
-     "seen": "2026-11-20"
+     "price": 76,
+     "seen": "2026-11-21"
     },
     "2026-12-12": {
      "hist": [
@@ -2678,10 +2733,14 @@
       [
        "2026-11-20",
        81
+      ],
+      [
+       "2026-11-21",
+       83
       ]
      ],
-     "price": 81,
-     "seen": "2026-11-20"
+     "price": 83,
+     "seen": "2026-11-21"
     },
     "2026-12-12": {
      "hist": [
@@ -2776,6 +2835,16 @@
      ],
      "price": 74,
      "seen": "2026-11-20"
+    },
+    "2026-11-21": {
+     "hist": [
+      [
+       "2026-11-21",
+       75
+      ]
+     ],
+     "price": 75,
+     "seen": "2026-11-21"
     }
    }
   },
@@ -2800,10 +2869,14 @@
       [
        "2026-11-20",
        87
+      ],
+      [
+       "2026-11-21",
+       86
       ]
      ],
-     "price": 87,
-     "seen": "2026-11-20"
+     "price": 86,
+     "seen": "2026-11-21"
     }
    }
   },
@@ -2811,7 +2884,7 @@
    "token": "ChkIzam13-a6zbO1ARoML2cvMXB0dzJyXzJxEAE",
    "name": "EMERIA Dinard Hôtel Thalasso & Spa",
    "rating": 4.3,
-   "reviews": 2923,
+   "reviews": 2924,
    "stars": 4,
    "lat": 48.63944,
    "lon": -2.07409,
@@ -2832,10 +2905,14 @@
       [
        "2026-11-20",
        229
+      ],
+      [
+       "2026-11-21",
+       204
       ]
      ],
-     "price": 229,
-     "seen": "2026-11-20"
+     "price": 204,
+     "seen": "2026-11-21"
     }
    }
   },
@@ -2864,16 +2941,193 @@
       [
        "2026-11-20",
        123
+      ],
+      [
+       "2026-11-21",
+       126
+      ]
+     ],
+     "price": 126,
+     "seen": "2026-11-21"
+    }
+   }
+  },
+  "Hôtel Escale Oceania Pornichet": {
+   "token": "ChcIztWXsMrclaNEGgsvZy8xdmpkcGZqdBAB",
+   "name": "Hôtel Escale Oceania Pornichet",
+   "rating": 4.5,
+   "reviews": 913,
+   "stars": 3,
+   "lat": 47.2609,
+   "lon": -2.34029,
+   "link": "https://www.oceaniahotels.com/escale-oceania-pornichet",
+   "desc": "Chambres, suites et appartements contemporains avec Wi-Fi gratuit. Petit-déjeuner payant et bar.",
+   "amen": [
+    "pets",
+    "resto"
+   ],
+   "sea": true,
+   "deal_g": null,
+   "obs": {
+    "2026-11-21": {
+     "hist": [
+      [
+       "2026-11-21",
+       70
+      ]
+     ],
+     "price": 70,
+     "seen": "2026-11-21"
+    }
+   }
+  },
+  "Hôtel ibis La Baule Pornichet Plage": {
+   "token": "ChgIiO2WrcWz76DWARoLL2cvMXZjX3ByMGQQAQ",
+   "name": "Hôtel ibis La Baule Pornichet Plage",
+   "rating": 4.4,
+   "reviews": 1279,
+   "stars": 3,
+   "lat": 47.26558,
+   "lon": -2.34384,
+   "link": "https://all.accor.com/lien_externe.svlt?goto=fiche_hotel&code_hotel=1171&merchantid=seo-maps-FR-1171&sourceid=aw-cen&utm_medium=seo%20maps&utm_source=google%20Maps&utm_campaign=seo%20maps",
+   "desc": "Chambres cosy dans hôtel low cost moderne avec restaurant, salon et piscine intérieure.",
+   "amen": [
+    "pets",
+    "resto"
+   ],
+   "sea": true,
+   "deal_g": null,
+   "obs": {
+    "2026-11-21": {
+     "hist": [
+      [
+       "2026-11-21",
+       64
+      ]
+     ],
+     "price": 64,
+     "seen": "2026-11-21"
+    }
+   }
+  },
+  "Hôtel Villa-Flornoy La Baule Pornichet Plage": {
+   "token": "ChcI65Hyvv-sjeZhGgsvZy8xdGRfNGs3dBAB",
+   "name": "Hôtel Villa-Flornoy La Baule Pornichet Plage",
+   "rating": 4.4,
+   "reviews": 333,
+   "stars": null,
+   "lat": 47.26432,
+   "lon": -2.33901,
+   "link": "http://www.villa-flornoy.com/",
+   "desc": "Chambres conviviales dotées d'une TV à écran plat, restaurant traditionnel et piscine couverte chauffée.",
+   "amen": [
+    "pets"
+   ],
+   "sea": true,
+   "deal_g": null,
+   "obs": {
+    "2026-11-21": {
+     "hist": [
+      [
+       "2026-11-21",
+       123
       ]
      ],
      "price": 123,
-     "seen": "2026-11-20"
+     "seen": "2026-11-21"
+    }
+   }
+  },
+  "Hotel BO&MIA": {
+   "token": "ChcIvoWZ6qDFy4IpGgsvZy8xdHBuMXltchAB",
+   "name": "Hotel BO&MIA",
+   "rating": 4.4,
+   "reviews": 396,
+   "stars": 3,
+   "lat": 47.28508,
+   "lon": -2.39591,
+   "link": "https://www.bomia-hotel.com/",
+   "desc": "Chambres colorées, certaines avec un minibar, dans un hôtel convivial proposant un restaurant avec terrasse.",
+   "amen": [
+    "pets",
+    "resto"
+   ],
+   "sea": true,
+   "deal_g": null,
+   "obs": {
+    "2026-11-21": {
+     "hist": [
+      [
+       "2026-11-21",
+       72
+      ]
+     ],
+     "price": 72,
+     "seen": "2026-11-21"
+    }
+   }
+  },
+  "Le Saint-Christophe Hôtel Restaurant Bar Salon de Thé La Baule": {
+   "token": "ChcI1LmugqPTv54CGgsvZy8xd2s3cTczOBAB",
+   "name": "Le Saint-Christophe Hôtel Restaurant Bar Salon de Thé La Baule",
+   "rating": 4.5,
+   "reviews": 1346,
+   "stars": 4,
+   "lat": 47.28382,
+   "lon": -2.39639,
+   "link": "http://www.st-christophe.com/",
+   "desc": "Bâtiment couvert de lierre avec chambres traditionnelles, Wi-Fi, restaurant classique et prêt de vélos.",
+   "amen": [
+    "pets",
+    "resto"
+   ],
+   "sea": true,
+   "deal_g": null,
+   "obs": {
+    "2026-11-21": {
+     "hist": [
+      [
+       "2026-11-21",
+       124
+      ]
+     ],
+     "price": 124,
+     "seen": "2026-11-21"
+    }
+   }
+  },
+  "Logis Hôtel de la Porte Saint Pierre": {
+   "token": "ChgIquuS0sDd2KaVARoLL2cvMXhwd2o1NHcQAQ",
+   "name": "Logis Hôtel de la Porte Saint Pierre",
+   "rating": 4.4,
+   "reviews": 392,
+   "stars": 2,
+   "lat": 48.64786,
+   "lon": -2.02831,
+   "link": "https://www.hotel-portestpierre.com/",
+   "desc": "Hôtel de famille simple proposant restaurant et chambres sobres, certaines avec vue sur la Manche.",
+   "amen": [
+    "pets",
+    "beach"
+   ],
+   "sea": true,
+   "deal_g": null,
+   "obs": {
+    "2026-11-21": {
+     "hist": [
+      [
+       "2026-11-21",
+       91
+      ]
+     ],
+     "price": 91,
+     "seen": "2026-11-21"
     }
    }
   }
  },
  "read": {
-  "2026-11-21": "2026-11-20",
+  "2026-11-21": "2026-11-21",
   "2026-11-28": "2026-11-20",
   "2026-12-05": "2026-11-20",
   "2026-12-12": "2026-11-20"
