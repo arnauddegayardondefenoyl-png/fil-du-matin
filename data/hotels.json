@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-21",
+ "updated": "2026-11-22",
  "note": "Prix d'une nuit samedi→dimanche pour 2 adultes, Google Hotels via SerpApi. Historique utilisé pour « moins cher que d'habitude ».",
  "hotels": {
   "Hôtel Le Nouveau Monde": {
@@ -829,6 +829,16 @@
        92
       ]
      ]
+    },
+    "2026-12-19": {
+     "hist": [
+      [
+       "2026-11-22",
+       107
+      ]
+     ],
+     "price": 107,
+     "seen": "2026-11-22"
     }
    },
    "address": "13 Av. Olivier Guichard, 44500 La Baule-Escoublac, France",
@@ -1369,7 +1379,7 @@
   "Hôtel Royal Emeraude Dinard MGallery": {
    "token": "ChcIsdGH4r7ChfcPGgsvZy8xdGZ5X2owMRAB",
    "rating": 4.7,
-   "reviews": 1028,
+   "reviews": 1029,
    "km_bruz": 72,
    "link": "https://mgallery.accor.com/hotels/6956?merchantid=seo-maps-FR-6956&sourceid=aw-cen&utm_source=google+Maps&utm_medium=seo+maps&utm_campaign=seo+maps&utm_term=MGallery-Launch",
    "obs": {
@@ -1424,6 +1434,16 @@
        152
       ]
      ]
+    },
+    "2026-12-19": {
+     "hist": [
+      [
+       "2026-11-22",
+       166
+      ]
+     ],
+     "price": 166,
+     "seen": "2026-11-22"
     }
    },
    "lat": 48.63504,
@@ -1609,14 +1629,28 @@
        88
       ]
      ]
+    },
+    "2026-12-19": {
+     "hist": [
+      [
+       "2026-11-22",
+       98
+      ]
+     ],
+     "price": 98,
+     "seen": "2026-11-22"
     }
    },
    "lat": 48.6468,
-   "lon": -2.027,
+   "lon": -2.02703,
    "name": "Hôtel Quic en Groigne",
    "stars": 3,
-   "amen": [],
-   "desc": "Chambres sobres dans hôtel en pierre de la vieille ville avec terrasse et Wi-Fi gratuit."
+   "amen": [
+    "beach"
+   ],
+   "desc": "Chambres sobres dans hôtel en pierre de la vieille ville avec terrasse et Wi-Fi gratuit.",
+   "sea": true,
+   "deal_g": null
   },
   "Hôtel Maison des Armateurs": {
    "token": "ChgIkvm_9fevk9gqGgwvZy8xaGMwdGRyMF8QAQ",
@@ -1737,6 +1771,16 @@
        126
       ]
      ]
+    },
+    "2026-12-19": {
+     "hist": [
+      [
+       "2026-11-22",
+       118
+      ]
+     ],
+     "price": 118,
+     "seen": "2026-11-22"
     }
    },
    "lat": 48.62743,
@@ -1780,10 +1824,29 @@
        94
       ]
      ]
+    },
+    "2026-12-19": {
+     "hist": [
+      [
+       "2026-11-22",
+       121
+      ]
+     ],
+     "price": 121,
+     "seen": "2026-11-22"
     }
    },
    "lat": 48.6519,
-   "lon": -2.017
+   "lon": -2.01701,
+   "name": "Hotel L'Adresse",
+   "stars": 4,
+   "desc": "Appart'hôtel moderne avec studios et appartements à 1 chambre dotés d'une kitchenette, bar et salle de sport.",
+   "amen": [
+    "pets",
+    "resto"
+   ],
+   "sea": true,
+   "deal_g": null
   },
   "Hôtel du Parc - Dinard": {
    "token": "ChgItour0qry2LSSARoLL2cvMXRuMDU1c3oQAQ",
@@ -2327,6 +2390,16 @@
      ],
      "price": 68,
      "seen": "2026-11-21"
+    },
+    "2026-12-19": {
+     "hist": [
+      [
+       "2026-11-22",
+       75
+      ]
+     ],
+     "price": 75,
+     "seen": "2026-11-22"
     }
    }
   },
@@ -2362,6 +2435,16 @@
      ],
      "price": 204,
      "seen": "2026-11-21"
+    },
+    "2026-12-19": {
+     "hist": [
+      [
+       "2026-11-22",
+       174
+      ]
+     ],
+     "price": 174,
+     "seen": "2026-11-22"
     }
    }
   },
@@ -2533,7 +2616,7 @@
    "token": "ChcI6JXz-L66p4pgGgsvZy8xdGRyZHI5ehAB",
    "name": "Hôtel Mercure La Baule Majestic",
    "rating": 4.5,
-   "reviews": 1164,
+   "reviews": 1165,
    "stars": 4,
    "lat": 47.28062,
    "lon": -2.40833,
@@ -2580,6 +2663,16 @@
      ],
      "price": 98,
      "seen": "2026-11-20"
+    },
+    "2026-12-19": {
+     "hist": [
+      [
+       "2026-11-22",
+       105
+      ]
+     ],
+     "price": 105,
+     "seen": "2026-11-22"
     }
    }
   },
@@ -2709,6 +2802,16 @@
      ],
      "price": 67,
      "seen": "2026-11-20"
+    },
+    "2026-12-19": {
+     "hist": [
+      [
+       "2026-11-22",
+       90
+      ]
+     ],
+     "price": 90,
+     "seen": "2026-11-22"
     }
    }
   },
@@ -2751,6 +2854,16 @@
      ],
      "price": 72,
      "seen": "2026-11-20"
+    },
+    "2026-12-19": {
+     "hist": [
+      [
+       "2026-11-22",
+       80
+      ]
+     ],
+     "price": 80,
+     "seen": "2026-11-22"
     }
    }
   },
@@ -2809,6 +2922,16 @@
      ],
      "price": 74,
      "seen": "2026-11-20"
+    },
+    "2026-12-19": {
+     "hist": [
+      [
+       "2026-11-22",
+       74
+      ]
+     ],
+     "price": 74,
+     "seen": "2026-11-22"
     }
    }
   },
@@ -2877,6 +3000,16 @@
      ],
      "price": 86,
      "seen": "2026-11-21"
+    },
+    "2026-12-19": {
+     "hist": [
+      [
+       "2026-11-22",
+       90
+      ]
+     ],
+     "price": 90,
+     "seen": "2026-11-22"
     }
    }
   },
@@ -2949,6 +3082,16 @@
      ],
      "price": 126,
      "seen": "2026-11-21"
+    },
+    "2026-12-19": {
+     "hist": [
+      [
+       "2026-11-22",
+       112
+      ]
+     ],
+     "price": 112,
+     "seen": "2026-11-22"
     }
    }
   },
@@ -2978,6 +3121,16 @@
      ],
      "price": 70,
      "seen": "2026-11-21"
+    },
+    "2026-12-19": {
+     "hist": [
+      [
+       "2026-11-22",
+       77
+      ]
+     ],
+     "price": 77,
+     "seen": "2026-11-22"
     }
    }
   },
@@ -3007,6 +3160,16 @@
      ],
      "price": 64,
      "seen": "2026-11-21"
+    },
+    "2026-12-19": {
+     "hist": [
+      [
+       "2026-11-22",
+       81
+      ]
+     ],
+     "price": 81,
+     "seen": "2026-11-22"
     }
    }
   },
@@ -3064,6 +3227,16 @@
      ],
      "price": 72,
      "seen": "2026-11-21"
+    },
+    "2026-12-19": {
+     "hist": [
+      [
+       "2026-11-22",
+       75
+      ]
+     ],
+     "price": 75,
+     "seen": "2026-11-22"
     }
    }
   },
@@ -3124,12 +3297,133 @@
      "seen": "2026-11-21"
     }
    }
+  },
+  "Logis Hôtel Saint-Guirec et de la Plage": {
+   "token": "ChcI6a-H_7PM1MheGgsvZy8xdGxneDcwcBAB",
+   "name": "Logis Hôtel Saint-Guirec et de la Plage",
+   "rating": 4.5,
+   "reviews": 813,
+   "stars": 2,
+   "lat": 48.83236,
+   "lon": -3.48614,
+   "link": "https://www.logishotels.com/fr/hotel/-2092?partid=1535",
+   "desc": "Hôtel de style décontracté avec accès plage, restaurant et chambres standards (certaines comprenant balcon).",
+   "amen": [
+    "pets",
+    "resto"
+   ],
+   "sea": true,
+   "deal_g": null,
+   "obs": {
+    "2026-12-19": {
+     "hist": [
+      [
+       "2026-11-22",
+       97
+      ]
+     ],
+     "price": 97,
+     "seen": "2026-11-22"
+    }
+   }
+  },
+  "RELAIS THALASSO Pornichet I Château des Tourelles": {
+   "token": "ChkIy4el-uDD5M0_Gg0vZy8xMWY2Z2pqMjRuEAE",
+   "name": "RELAIS THALASSO Pornichet I Château des Tourelles",
+   "rating": 4.3,
+   "reviews": 3251,
+   "stars": 4,
+   "lat": 47.25562,
+   "lon": -2.3393,
+   "link": "https://pornichet.relaisthalasso.com/",
+   "desc": "Chambres élégantes dans château avec tourelles, restaurant chic et spa proposant soins d'hydrothérapie.",
+   "amen": [
+    "pool",
+    "hottub",
+    "pets",
+    "spa",
+    "beach",
+    "resto"
+   ],
+   "sea": true,
+   "deal_g": null,
+   "obs": {
+    "2026-12-19": {
+     "hist": [
+      [
+       "2026-11-22",
+       217
+      ]
+     ],
+     "price": 217,
+     "seen": "2026-11-22"
+    }
+   }
+  },
+  "Logis Hôtel la Closerie": {
+   "token": "ChcI6tyk2rGJ4-AzGgsvZy8xdGRxc3huchAB",
+   "name": "Logis Hôtel la Closerie",
+   "rating": 4.8,
+   "reviews": 265,
+   "stars": 4,
+   "lat": 47.28419,
+   "lon": -2.40336,
+   "link": "https://www.hotel-la-closerie.com/",
+   "desc": "Hôtel du centre-ville avec chambres chaleureuses, salle à manger en terrasse et navette gratuite vers la gare.",
+   "amen": [
+    "pets",
+    "resto"
+   ],
+   "sea": true,
+   "deal_g": null,
+   "obs": {
+    "2026-12-19": {
+     "hist": [
+      [
+       "2026-11-22",
+       108
+      ]
+     ],
+     "price": 108,
+     "seen": "2026-11-22"
+    }
+   }
+  },
+  "Hotel le Port-Malo": {
+   "token": "ChcI0e_gk5qJ9MZfGgsvZy8xdGQ1Zmh4ehAB",
+   "name": "Hotel le Port-Malo",
+   "rating": 4.4,
+   "reviews": 203,
+   "stars": 2,
+   "lat": 48.65103,
+   "lon": -2.02474,
+   "link": "http://www.hotel-port-malo.com/",
+   "desc": "Chambres sobres dans un hôtel en pierre avec pub pittoresque et Wi-Fi gratuit.",
+   "amen": [
+    "pets",
+    "beach"
+   ],
+   "sea": true,
+   "deal_g": null,
+   "obs": {
+    "2026-12-19": {
+     "hist": [
+      [
+       "2026-11-22",
+       90
+      ]
+     ],
+     "price": 90,
+     "seen": "2026-11-22"
+    }
+   }
   }
  },
  "read": {
   "2026-11-21": "2026-11-21",
   "2026-11-28": "2026-11-20",
   "2026-12-05": "2026-11-20",
-  "2026-12-12": "2026-11-20"
+  "2026-12-12": "2026-11-20",
+  "2026-12-19": "2026-11-22"
  }
 }
