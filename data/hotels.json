@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-23",
+ "updated": "2026-11-24",
  "note": "Prix d'une nuit samedi→dimanche pour 2 adultes, Google Hotels via SerpApi. Historique utilisé pour « moins cher que d'habitude ».",
  "hotels": {
   "Hôtel Le Nouveau Monde": {
@@ -653,13 +653,17 @@
      ]
     },
     "2026-12-05": {
-     "price": 100,
-     "seen": "2026-11-19",
+     "price": 91,
+     "seen": "2026-11-24",
      "src": "search",
      "hist": [
       [
        "2026-11-19",
        100
+      ],
+      [
+       "2026-11-24",
+       91
       ]
      ]
     },
@@ -768,7 +772,7 @@
   "Hôtel Lutétia & Spa": {
    "token": "ChcIqP723MnHwe5XGgsvZy8xdGZwejZmahAB",
    "rating": 4.6,
-   "reviews": 408,
+   "reviews": 407,
    "km_bruz": 96,
    "link": "https://www.lutetia-labaule.com/",
    "obs": {
@@ -812,9 +816,9 @@
      ]
     },
     "2026-12-05": {
-     "price": 104,
+     "price": 106,
      "booking": 95,
-     "seen": "2026-11-20",
+     "seen": "2026-11-24",
      "src": "details",
      "hist": [
       [
@@ -824,6 +828,10 @@
       [
        "2026-11-20",
        104
+      ],
+      [
+       "2026-11-24",
+       106
       ]
      ]
     },
@@ -1391,7 +1399,7 @@
   "Hôtel Royal Emeraude Dinard MGallery": {
    "token": "ChcIsdGH4r7ChfcPGgsvZy8xdGZ5X2owMRAB",
    "rating": 4.7,
-   "reviews": 1029,
+   "reviews": 1031,
    "km_bruz": 72,
    "link": "https://mgallery.accor.com/hotels/6956?merchantid=seo-maps-FR-6956&sourceid=aw-cen&utm_source=google+Maps&utm_medium=seo+maps&utm_campaign=seo+maps&utm_term=MGallery-Launch",
    "obs": {
@@ -1430,13 +1438,17 @@
      ]
     },
     "2026-12-05": {
-     "price": 162,
-     "seen": "2026-11-19",
+     "price": 159,
+     "seen": "2026-11-24",
      "src": "search",
      "hist": [
       [
        "2026-11-19",
        162
+      ],
+      [
+       "2026-11-24",
+       159
       ]
      ]
     },
@@ -1630,11 +1642,15 @@
     },
     "2026-12-05": {
      "price": 88,
-     "seen": "2026-11-19",
+     "seen": "2026-11-24",
      "src": "search",
      "hist": [
       [
        "2026-11-19",
+       88
+      ],
+      [
+       "2026-11-24",
        88
       ]
      ]
@@ -2475,6 +2491,16 @@
      ],
      "price": 174,
      "seen": "2026-11-22"
+    },
+    "2026-12-05": {
+     "hist": [
+      [
+       "2026-11-24",
+       174
+      ]
+     ],
+     "price": 174,
+     "seen": "2026-11-24"
     }
    }
   },
@@ -2679,10 +2705,14 @@
       [
        "2026-11-20",
        99
+      ],
+      [
+       "2026-11-24",
+       108
       ]
      ],
-     "price": 99,
-     "seen": "2026-11-20"
+     "price": 108,
+     "seen": "2026-11-24"
     },
     "2026-12-12": {
      "hist": [
@@ -2862,6 +2892,16 @@
      ],
      "price": 76,
      "seen": "2026-11-23"
+    },
+    "2026-12-05": {
+     "hist": [
+      [
+       "2026-11-24",
+       77
+      ]
+     ],
+     "price": 77,
+     "seen": "2026-11-24"
     }
    }
   },
@@ -2869,7 +2909,7 @@
    "token": "ChgIuePH4Jex0tDuARoLL2cvMXRmY3k1aDIQAQ",
    "name": "Hôtel des Dunes",
    "rating": 4.7,
-   "reviews": 572,
+   "reviews": 573,
    "stars": 3,
    "lat": 47.2864,
    "lon": -2.39439,
@@ -2924,6 +2964,16 @@
      ],
      "price": 77,
      "seen": "2026-11-23"
+    },
+    "2026-12-05": {
+     "hist": [
+      [
+       "2026-11-24",
+       72
+      ]
+     ],
+     "price": 72,
+     "seen": "2026-11-24"
     }
    }
   },
@@ -3042,6 +3092,16 @@
      ],
      "price": 74,
      "seen": "2026-11-23"
+    },
+    "2026-12-05": {
+     "hist": [
+      [
+       "2026-11-24",
+       75
+      ]
+     ],
+     "price": 75,
+     "seen": "2026-11-24"
     }
    }
   },
@@ -3091,7 +3151,7 @@
    "token": "ChkIzam13-a6zbO1ARoML2cvMXB0dzJyXzJxEAE",
    "name": "EMERIA Dinard Hôtel Thalasso & Spa",
    "rating": 4.3,
-   "reviews": 2925,
+   "reviews": 2929,
    "stars": 4,
    "lat": 48.63944,
    "lon": -2.07409,
@@ -3130,6 +3190,16 @@
      ],
      "price": 224,
      "seen": "2026-11-23"
+    },
+    "2026-12-05": {
+     "hist": [
+      [
+       "2026-11-24",
+       168
+      ]
+     ],
+     "price": 168,
+     "seen": "2026-11-24"
     }
    }
   },
@@ -3186,6 +3256,16 @@
      ],
      "price": 105,
      "seen": "2026-11-23"
+    },
+    "2026-12-05": {
+     "hist": [
+      [
+       "2026-11-24",
+       111
+      ]
+     ],
+     "price": 111,
+     "seen": "2026-11-24"
     }
    }
   },
@@ -3235,6 +3315,16 @@
      ],
      "price": 65,
      "seen": "2026-11-23"
+    },
+    "2026-12-05": {
+     "hist": [
+      [
+       "2026-11-24",
+       66
+      ]
+     ],
+     "price": 66,
+     "seen": "2026-11-24"
     }
    }
   },
@@ -3284,6 +3374,16 @@
      ],
      "price": 70,
      "seen": "2026-11-23"
+    },
+    "2026-12-05": {
+     "hist": [
+      [
+       "2026-11-24",
+       83
+      ]
+     ],
+     "price": 83,
+     "seen": "2026-11-24"
     }
    }
   },
@@ -3322,6 +3422,16 @@
      ],
      "price": 123,
      "seen": "2026-11-23"
+    },
+    "2026-12-05": {
+     "hist": [
+      [
+       "2026-11-24",
+       123
+      ]
+     ],
+     "price": 123,
+     "seen": "2026-11-24"
     }
    }
   },
@@ -3371,6 +3481,16 @@
      ],
      "price": 75,
      "seen": "2026-11-23"
+    },
+    "2026-12-05": {
+     "hist": [
+      [
+       "2026-11-24",
+       75
+      ]
+     ],
+     "price": 75,
+     "seen": "2026-11-24"
     }
    }
   },
@@ -3378,7 +3498,7 @@
    "token": "ChcI1LmugqPTv54CGgsvZy8xd2s3cTczOBAB",
    "name": "Le Saint-Christophe Hôtel Restaurant Bar Salon de Thé La Baule",
    "rating": 4.5,
-   "reviews": 1346,
+   "reviews": 1347,
    "stars": 4,
    "lat": 47.28382,
    "lon": -2.39639,
@@ -3400,6 +3520,16 @@
      ],
      "price": 124,
      "seen": "2026-11-21"
+    },
+    "2026-12-05": {
+     "hist": [
+      [
+       "2026-11-24",
+       117
+      ]
+     ],
+     "price": 117,
+     "seen": "2026-11-24"
     }
    }
   },
@@ -3465,7 +3595,7 @@
    "token": "ChkIy4el-uDD5M0_Gg0vZy8xMWY2Z2pqMjRuEAE",
    "name": "RELAIS THALASSO Pornichet I Château des Tourelles",
    "rating": 4.3,
-   "reviews": 3254,
+   "reviews": 3260,
    "stars": 4,
    "lat": 47.25562,
    "lon": -2.3393,
@@ -3501,6 +3631,16 @@
      ],
      "price": 232,
      "seen": "2026-11-23"
+    },
+    "2026-12-05": {
+     "hist": [
+      [
+       "2026-11-24",
+       217
+      ]
+     ],
+     "price": 217,
+     "seen": "2026-11-24"
     }
    }
   },
@@ -3530,6 +3670,16 @@
      ],
      "price": 108,
      "seen": "2026-11-22"
+    },
+    "2026-12-05": {
+     "hist": [
+      [
+       "2026-11-24",
+       100
+      ]
+     ],
+     "price": 100,
+     "seen": "2026-11-24"
     }
    }
   },
@@ -3559,6 +3709,16 @@
      ],
      "price": 90,
      "seen": "2026-11-22"
+    },
+    "2026-12-05": {
+     "hist": [
+      [
+       "2026-11-24",
+       90
+      ]
+     ],
+     "price": 90,
+     "seen": "2026-11-24"
     }
    }
   }
@@ -3566,7 +3726,7 @@
  "read": {
   "2026-11-21": "2026-11-21",
   "2026-11-28": "2026-11-23",
-  "2026-12-05": "2026-11-20",
+  "2026-12-05": "2026-11-24",
   "2026-12-12": "2026-11-20",
   "2026-12-19": "2026-11-22"
  }
