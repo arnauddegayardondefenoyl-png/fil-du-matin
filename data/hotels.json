@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-24",
+ "updated": "2026-11-25",
  "note": "Prix d'une nuit samedi→dimanche pour 2 adultes, Google Hotels via SerpApi. Historique utilisé pour « moins cher que d'habitude ».",
  "hotels": {
   "Hôtel Le Nouveau Monde": {
@@ -180,20 +180,24 @@
    "link": "https://les-bassans.com/",
    "obs": {
     "2026-12-12": {
-     "price": 197,
+     "price": 191,
      "booking": 197,
-     "seen": "2026-11-19",
+     "seen": "2026-11-25",
      "src": "details",
      "hist": [
       [
        "2026-11-19",
        197
+      ],
+      [
+       "2026-11-25",
+       191
       ]
      ]
     }
    },
    "address": "67 Chem. de la Messe, 22700 Perros-Guirec, France",
-   "lat": 48.8198,
+   "lat": 48.81984,
    "lon": -3.4363,
    "name": "Les Bassans",
    "stars": 4,
@@ -201,9 +205,12 @@
     "hottub",
     "pets",
     "spa",
+    "beach",
     "resto"
    ],
-   "desc": "Hôtel de style décontracté avec restaurant, jardin, vue sur la Manche et Wi-Fi gratuit."
+   "desc": "Hôtel de style décontracté avec restaurant, jardin, vue sur la Manche et Wi-Fi gratuit.",
+   "sea": true,
+   "deal_g": null
   },
   "Hôtel Brittany & Spa": {
    "token": "ChgIwIfd_p-QqsWCARoLL2cvMXRkeF85MDMQAQ",
@@ -320,7 +327,7 @@
   "Roz Marine Hôtel Thalasso & Spa": {
    "token": "ChoIyraC3LWX-5TQARoNL2cvMTFyY2w5d2d3chAB",
    "rating": 4.5,
-   "reviews": 1191,
+   "reviews": 1194,
    "km_bruz": 154,
    "link": "https://roz-marine-thalasso.com/?utm_source=GMB",
    "obs": {
@@ -359,20 +366,24 @@
      ]
     },
     "2026-12-12": {
-     "price": 401,
-     "seen": "2026-11-19",
+     "price": 400,
+     "seen": "2026-11-25",
      "src": "search",
      "hist": [
       [
        "2026-11-19",
        401
+      ],
+      [
+       "2026-11-25",
+       400
       ]
      ]
     }
    },
    "address": "58 Bd Thalassa, 22700 Perros-Guirec, France",
-   "lat": 48.8157,
-   "lon": -3.4601,
+   "lat": 48.81571,
+   "lon": -3.46013,
    "name": "Roz Marine Hôtel Thalasso & Spa",
    "stars": 4,
    "amen": [
@@ -380,9 +391,12 @@
     "hottub",
     "pets",
     "spa",
+    "beach",
     "resto"
    ],
-   "desc": "Un hôtel de thalasso face à la Côte de granit rose : spa, puis balade jusqu'au phare de Ploumanac'h au coucher du soleil."
+   "desc": "Un hôtel de thalasso face à la Côte de granit rose : spa, puis balade jusqu'au phare de Ploumanac'h au coucher du soleil.",
+   "sea": true,
+   "deal_g": null
   },
   "Hotel Sport Ouessant & Spa, The Originals Collection": {
    "token": "ChoI4bTT3ZmkzcO2ARoNL2cvMTFsa3p2cnN5axAB",
@@ -668,14 +682,18 @@
      ]
     },
     "2026-12-12": {
-     "price": 82,
+     "price": 74,
      "booking": 89,
-     "seen": "2026-11-19",
+     "seen": "2026-11-25",
      "src": "details",
      "hist": [
       [
        "2026-11-19",
        82
+      ],
+      [
+       "2026-11-25",
+       74
       ]
      ]
     }
@@ -836,8 +854,8 @@
      ]
     },
     "2026-12-12": {
-     "price": 92,
-     "seen": "2026-11-20",
+     "price": 89,
+     "seen": "2026-11-25",
      "src": "search",
      "hist": [
       [
@@ -847,6 +865,10 @@
       [
        "2026-11-20",
        92
+      ],
+      [
+       "2026-11-25",
+       89
       ]
      ]
     },
@@ -1454,11 +1476,15 @@
     },
     "2026-12-12": {
      "price": 152,
-     "seen": "2026-11-19",
+     "seen": "2026-11-25",
      "src": "search",
      "hist": [
       [
        "2026-11-19",
+       152
+      ],
+      [
+       "2026-11-25",
        152
       ]
      ]
@@ -1657,11 +1683,15 @@
     },
     "2026-12-12": {
      "price": 88,
-     "seen": "2026-11-19",
+     "seen": "2026-11-25",
      "src": "search",
      "hist": [
       [
        "2026-11-19",
+       88
+      ],
+      [
+       "2026-11-25",
        88
       ]
      ]
@@ -2501,6 +2531,16 @@
      ],
      "price": 174,
      "seen": "2026-11-24"
+    },
+    "2026-12-12": {
+     "hist": [
+      [
+       "2026-11-25",
+       174
+      ]
+     ],
+     "price": 174,
+     "seen": "2026-11-25"
     }
    }
   },
@@ -2672,7 +2712,7 @@
    "token": "ChcI6JXz-L66p4pgGgsvZy8xdGRyZHI5ehAB",
    "name": "Hôtel Mercure La Baule Majestic",
    "rating": 4.5,
-   "reviews": 1165,
+   "reviews": 1166,
    "stars": 4,
    "lat": 47.28062,
    "lon": -2.40833,
@@ -2719,10 +2759,14 @@
       [
        "2026-11-20",
        98
+      ],
+      [
+       "2026-11-25",
+       103
       ]
      ],
-     "price": 98,
-     "seen": "2026-11-20"
+     "price": 103,
+     "seen": "2026-11-25"
     },
     "2026-12-19": {
      "hist": [
@@ -2868,10 +2912,14 @@
       [
        "2026-11-20",
        67
+      ],
+      [
+       "2026-11-25",
+       72
       ]
      ],
-     "price": 67,
-     "seen": "2026-11-20"
+     "price": 72,
+     "seen": "2026-11-25"
     },
     "2026-12-19": {
      "hist": [
@@ -2940,10 +2988,14 @@
       [
        "2026-11-20",
        72
+      ],
+      [
+       "2026-11-25",
+       72
       ]
      ],
      "price": 72,
-     "seen": "2026-11-20"
+     "seen": "2026-11-25"
     },
     "2026-12-19": {
      "hist": [
@@ -3068,10 +3120,14 @@
       [
        "2026-11-20",
        74
+      ],
+      [
+       "2026-11-25",
+       74
       ]
      ],
      "price": 74,
-     "seen": "2026-11-20"
+     "seen": "2026-11-25"
     },
     "2026-11-21": {
      "hist": [
@@ -3144,6 +3200,16 @@
      ],
      "price": 90,
      "seen": "2026-11-22"
+    },
+    "2026-12-12": {
+     "hist": [
+      [
+       "2026-11-25",
+       88
+      ]
+     ],
+     "price": 88,
+     "seen": "2026-11-25"
     }
    }
   },
@@ -3151,7 +3217,7 @@
    "token": "ChkIzam13-a6zbO1ARoML2cvMXB0dzJyXzJxEAE",
    "name": "EMERIA Dinard Hôtel Thalasso & Spa",
    "rating": 4.3,
-   "reviews": 2929,
+   "reviews": 2932,
    "stars": 4,
    "lat": 48.63944,
    "lon": -2.07409,
@@ -3200,6 +3266,16 @@
      ],
      "price": 168,
      "seen": "2026-11-24"
+    },
+    "2026-12-12": {
+     "hist": [
+      [
+       "2026-11-25",
+       161
+      ]
+     ],
+     "price": 161,
+     "seen": "2026-11-25"
     }
    }
   },
@@ -3266,6 +3342,16 @@
      ],
      "price": 111,
      "seen": "2026-11-24"
+    },
+    "2026-12-12": {
+     "hist": [
+      [
+       "2026-11-25",
+       113
+      ]
+     ],
+     "price": 113,
+     "seen": "2026-11-25"
     }
    }
   },
@@ -3273,7 +3359,7 @@
    "token": "ChcIztWXsMrclaNEGgsvZy8xdmpkcGZqdBAB",
    "name": "Hôtel Escale Oceania Pornichet",
    "rating": 4.5,
-   "reviews": 913,
+   "reviews": 914,
    "stars": 3,
    "lat": 47.2609,
    "lon": -2.34029,
@@ -3325,6 +3411,16 @@
      ],
      "price": 66,
      "seen": "2026-11-24"
+    },
+    "2026-12-12": {
+     "hist": [
+      [
+       "2026-11-25",
+       61
+      ]
+     ],
+     "price": 61,
+     "seen": "2026-11-25"
     }
    }
   },
@@ -3384,6 +3480,16 @@
      ],
      "price": 83,
      "seen": "2026-11-24"
+    },
+    "2026-12-12": {
+     "hist": [
+      [
+       "2026-11-25",
+       72
+      ]
+     ],
+     "price": 72,
+     "seen": "2026-11-25"
     }
    }
   },
@@ -3491,6 +3597,16 @@
      ],
      "price": 75,
      "seen": "2026-11-24"
+    },
+    "2026-12-12": {
+     "hist": [
+      [
+       "2026-11-25",
+       75
+      ]
+     ],
+     "price": 75,
+     "seen": "2026-11-25"
     }
    }
   },
@@ -3530,6 +3646,16 @@
      ],
      "price": 117,
      "seen": "2026-11-24"
+    },
+    "2026-12-12": {
+     "hist": [
+      [
+       "2026-11-25",
+       110
+      ]
+     ],
+     "price": 110,
+     "seen": "2026-11-25"
     }
    }
   },
@@ -3574,6 +3700,7 @@
    "desc": "Hôtel de style décontracté avec accès plage, restaurant et chambres standards (certaines comprenant balcon).",
    "amen": [
     "pets",
+    "beach",
     "resto"
    ],
    "sea": true,
@@ -3588,6 +3715,16 @@
      ],
      "price": 97,
      "seen": "2026-11-22"
+    },
+    "2026-12-12": {
+     "hist": [
+      [
+       "2026-11-25",
+       97
+      ]
+     ],
+     "price": 97,
+     "seen": "2026-11-25"
     }
    }
   },
@@ -3595,7 +3732,7 @@
    "token": "ChkIy4el-uDD5M0_Gg0vZy8xMWY2Z2pqMjRuEAE",
    "name": "RELAIS THALASSO Pornichet I Château des Tourelles",
    "rating": 4.3,
-   "reviews": 3260,
+   "reviews": 3264,
    "stars": 4,
    "lat": 47.25562,
    "lon": -2.3393,
@@ -3641,6 +3778,16 @@
      ],
      "price": 217,
      "seen": "2026-11-24"
+    },
+    "2026-12-12": {
+     "hist": [
+      [
+       "2026-11-25",
+       180
+      ]
+     ],
+     "price": 180,
+     "seen": "2026-11-25"
     }
    }
   },
@@ -3680,6 +3827,16 @@
      ],
      "price": 100,
      "seen": "2026-11-24"
+    },
+    "2026-12-12": {
+     "hist": [
+      [
+       "2026-11-25",
+       104
+      ]
+     ],
+     "price": 104,
+     "seen": "2026-11-25"
     }
    }
   },
@@ -3719,6 +3876,46 @@
      ],
      "price": 90,
      "seen": "2026-11-24"
+    },
+    "2026-12-12": {
+     "hist": [
+      [
+       "2026-11-25",
+       90
+      ]
+     ],
+     "price": 90,
+     "seen": "2026-11-25"
+    }
+   }
+  },
+  "La maison Régent": {
+   "token": "ChgI143yhdaugMqSARoLL2cvMXRkcHIwcHoQAQ",
+   "name": "La maison Régent",
+   "rating": 4.3,
+   "reviews": 243,
+   "stars": null,
+   "lat": 47.26976,
+   "lon": -2.35042,
+   "link": "http://www.le-regent.fr/",
+   "desc": "Chambres standards dans une villa du XIXe siècle, avec spa intime et restaurant avec vue sur la mer.",
+   "amen": [
+    "hottub",
+    "spa",
+    "beach"
+   ],
+   "sea": true,
+   "deal_g": null,
+   "obs": {
+    "2026-12-12": {
+     "hist": [
+      [
+       "2026-11-25",
+       132
+      ]
+     ],
+     "price": 132,
+     "seen": "2026-11-25"
     }
    }
   }
@@ -3727,7 +3924,7 @@
   "2026-11-21": "2026-11-21",
   "2026-11-28": "2026-11-23",
   "2026-12-05": "2026-11-24",
-  "2026-12-12": "2026-11-20",
+  "2026-12-12": "2026-11-25",
   "2026-12-19": "2026-11-22"
  }
 }
